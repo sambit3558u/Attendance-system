@@ -361,10 +361,10 @@ Repository:
 
 ---
 
-# 👨‍💻 Developer
+## 👨‍💻 Author
 
 **Sambit Kumar Patra**
 
-Mini Project
+GitHub: https://github.com/sambit3558u
 
-**Smart Attendance System**
+LinkedIn: https://www.linkedin.com/in/sambit-kumar-patra-387a123a6**
