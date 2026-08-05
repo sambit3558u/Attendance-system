@@ -332,24 +332,166 @@ attendance-system/
 
 ---
 
-# 📅 Upcoming Work (Day 3)
+# 📅 Day 3 - Backend Authentication System
 
-- Design Teacher Dashboard
-- Design Student Dashboard
-- Create Start Class Page
-- Create Active Class Page
-- Attendance History Page
-- Teacher Profile Page
-- Student Profile Page
-- Spring Boot Backend Setup
-- PostgreSQL Database Connection
-- Registration API
-- Login API
+## ✅ Work Completed
+
+Today, the complete backend authentication system was implemented using Spring Boot, Spring Security, MySQL, and JWT.
+
+---
+
+## 🚀 Features Implemented
+
+### User Registration
+
+- Teacher Registration
+- Student Registration
+- Role-based Validation
+- Duplicate Email Check
+- Duplicate Phone Check
+- Duplicate Roll Number Check
+- Password Confirmation Validation
+- BCrypt Password Hashing
+- Save User into MySQL
+
+---
+
+### User Login
+
+- Email Validation
+- Password Verification
+- Role Verification
+- JWT Token Generation
+- 30 Days Login Session
+- Login Response API
+
+---
+
+### One Device Login (Student)
+
+- First Login → Device ID saved into Database
+- Same Device → Login Allowed
+- Different Device → Login Blocked
+
+---
+
+### Teacher Login
+
+- Multiple Device Login Allowed
+
+---
+
+### Logout
+
+- Manual Logout API
+- 5 Minutes Login Cooldown
+- Logout Time Saved into Database
+
+---
+
+## 🔐 Security
+
+- BCrypt Password Encryption
 - JWT Authentication
-- Location Verification
-- Device Verification
-- One Device Login
-- Attendance Reports
+- Spring Security Configuration
+- Stateless Session
+- CORS Configuration
+- Custom Exception Handling
+
+---
+
+## 📂 Backend Structure
+
+Implemented Packages
+
+- config
+- controller
+- dto
+- entity
+- repository
+- security
+- service
+- exception
+
+---
+
+## 📄 Files Created
+
+- User.java
+- Role.java
+- UserRepository.java
+- RegisterRequest.java
+- LoginRequest.java
+- AuthResponse.java
+- JwtService.java
+- AuthService.java
+- AuthController.java
+- SecurityConfig.java
+- ApiException.java
+- GlobalExceptionHandler.java
+
+---
+
+## 🗄 Database
+
+Database : MySQL
+
+Table Created
+
+- users
+
+Important Fields
+
+- name
+- email
+- phone
+- password
+- role
+- department
+- rollNumber
+- branch
+- semester
+- deviceId
+- lastLogoutAt
+- loginBlockedUntil
+- createdAt
+- updatedAt
+
+---
+
+## ✅ APIs Completed
+
+POST /api/auth/register
+
+POST /api/auth/login
+
+POST /api/auth/logout
+
+---
+
+## 🧪 Testing
+
+✔ Student Registration
+
+✔ Teacher Registration
+
+✔ Password Hashing
+
+✔ Login Authentication
+
+✔ JWT Generation
+
+✔ One Device Login
+
+✔ Duplicate Validation
+
+✔ MySQL Integration
+
+---
+
+## 📌 Day 3 Summary
+
+Successfully completed the backend authentication module with secure registration, login, JWT authentication, one-device login for students, logout cooldown, and MySQL database integration.
 
 ---
 

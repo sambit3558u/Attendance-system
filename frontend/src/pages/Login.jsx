@@ -7,6 +7,7 @@ function Login() {
 
     const [role, setRole] = useState("teacher");
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [formData, setFormData] = useState({
         email: "",
@@ -23,17 +24,134 @@ function Login() {
         }));
     };
 
-    const handleSubmit = (event) => {
+    /**
+     * Student ke browser ke liye ek UUID create karta hai.
+     * Same browser me next login par existing UUID return hoga.
+     */
+    const getOrCreateDeviceId = () => {
+        let deviceId = localStorage.getItem("deviceId");
+
+        if (!deviceId) {
+            deviceId = crypto.randomUUID();
+            localStorage.setItem("deviceId", deviceId);
+        }
+
+        return deviceId;
+    };
+
+    /**
+     * Login form ko Spring Boot backend par send karta hai.
+     */
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
-        console.log({
-            role,
-            ...formData,
-        });
+        if (isLoading) {
+            return;
+        }
 
-        alert(`Login submitted as ${role}`);
+        setIsLoading(true);
 
-        // Backend connect hone ke baad yahan API call hogi.
+        try {
+            const loginData = {
+                email: formData.email.trim(),
+                password: formData.password,
+                role: role.toUpperCase(),
+
+                // One-device restriction sirf Student ke liye
+                deviceId:
+                    role === "student"
+                        ? getOrCreateDeviceId()
+                        : null,
+            };
+
+            console.log("Login request:", loginData);
+
+            const response = await fetch(
+                "http://localhost:8080/api/auth/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(loginData),
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.message ||
+                    "Login failed. Please try again."
+                );
+            }
+
+            /*
+             * JWT token save karo.
+             * Abhi development ke liye localStorage use kar rahe hain.
+             */
+            localStorage.setItem(
+                "accessToken",
+                data.accessToken
+            );
+
+            /*
+             * Logged-in user information save karo.
+             */
+            localStorage.setItem(
+                "user",
+                JSON.stringify({
+                    userId: data.userId,
+                    name: data.name,
+                    email: data.email,
+                    role: data.role,
+                })
+            );
+
+            /*
+             * Token expiry aur login time save karo.
+             */
+            localStorage.setItem(
+                "tokenExpiresIn",
+                String(data.expiresIn)
+            );
+
+            localStorage.setItem(
+                "loginTime",
+                new Date().toISOString()
+            );
+
+            localStorage.setItem(
+                "rememberMe",
+                String(formData.rememberMe)
+            );
+
+            alert(data.message || "Login successful");
+
+            if (data.role === "TEACHER") {
+                navigate("/teacher-dashboard");
+            } else if (data.role === "STUDENT") {
+                navigate("/student-dashboard");
+            } else {
+                throw new Error(
+                    "Invalid user role received from backend."
+                );
+            }
+
+        } catch (error) {
+            console.error("Login error:", error);
+
+            if (error instanceof TypeError) {
+                alert(
+                    "Backend se connection nahi ho pa raha. Check karo Spring Boot port 8080 par run ho raha hai."
+                );
+            } else {
+                alert(error.message);
+            }
+
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -48,16 +166,24 @@ function Login() {
                     role="button"
                     tabIndex={0}
                     onKeyDown={(event) => {
-                        if (event.key === "Enter") {
+                        if (
+                            event.key === "Enter" ||
+                            event.key === " "
+                        ) {
                             navigate("/");
                         }
                     }}
                 >
-                    <div className="login-logo-icon">SA</div>
+                    <div className="login-logo-icon">
+                        SA
+                    </div>
 
                     <div>
                         <h2>Smart Attendance</h2>
-                        <p>Location Based Attendance System</p>
+
+                        <p>
+                            Location Based Attendance System
+                        </p>
                     </div>
                 </div>
 
@@ -72,61 +198,95 @@ function Login() {
 
             <main className="login-main">
                 <section className="login-information">
-                    <span className="login-tag">SECURE LOGIN</span>
+                    <span className="login-tag">
+                        SECURE LOGIN
+                    </span>
 
-                    <h1>Welcome back to Smart Attendance</h1>
+                    <h1>
+                        Welcome back to Smart Attendance
+                    </h1>
 
                     <p>
-                        Access your attendance dashboard securely as a teacher or student.
+                        Access your attendance dashboard
+                        securely as a teacher or student.
                     </p>
-
                 </section>
 
                 <section className="login-card">
                     <div className="login-card-heading">
                         <span>ACCOUNT ACCESS</span>
+
                         <h2>Login to your account</h2>
-                        <p>Select your role and enter your login details.</p>
+
+                        <p>
+                            Select your role and enter your
+                            login details.
+                        </p>
                     </div>
 
                     <div className="role-selector">
                         <button
                             type="button"
-                            className={`role-option ${role === "teacher" ? "active teacher-active" : ""
+                            className={`role-option ${role === "teacher"
+                                    ? "active teacher-active"
+                                    : ""
                                 }`}
                             onClick={() => setRole("teacher")}
+                            aria-pressed={role === "teacher"}
+                            disabled={isLoading}
                         >
-                            <span className="role-option-icon">👨‍🏫</span>
+                            <span className="role-option-icon">
+                                👨‍🏫
+                            </span>
 
                             <span>
                                 <strong>Teacher</strong>
-                                <small>Manage classes</small>
+
+                                <small>
+                                    Manage classes
+                                </small>
                             </span>
                         </button>
 
                         <button
                             type="button"
-                            className={`role-option ${role === "student" ? "active student-active" : ""
+                            className={`role-option ${role === "student"
+                                    ? "active student-active"
+                                    : ""
                                 }`}
                             onClick={() => setRole("student")}
+                            aria-pressed={role === "student"}
+                            disabled={isLoading}
                         >
-                            <span className="role-option-icon">🎓</span>
+                            <span className="role-option-icon">
+                                🎓
+                            </span>
 
                             <span>
                                 <strong>Student</strong>
-                                <small>Mark attendance</small>
+
+                                <small>
+                                    Mark attendance
+                                </small>
                             </span>
                         </button>
                     </div>
 
-                    <form className="login-form" onSubmit={handleSubmit}>
+                    <form
+                        className="login-form"
+                        onSubmit={handleSubmit}
+                    >
                         <div className="form-group">
                             <label htmlFor="email">
-                                {role === "student" ? "Gmail ID" : "Email ID"}
+                                {role === "student"
+                                    ? "Gmail ID"
+                                    : "Email ID"}
                             </label>
 
                             <div className="input-wrapper">
-                                <span className="input-icon">✉</span>
+                                <span className="input-icon">
+                                    ✉
+                                </span>
 
                                 <input
                                     id="email"
@@ -140,6 +300,7 @@ function Login() {
                                             : "Enter your email ID"
                                     }
                                     autoComplete="email"
+                                    disabled={isLoading}
                                     required
                                 />
                             </div>
@@ -147,41 +308,65 @@ function Login() {
 
                         <div className="form-group">
                             <div className="password-label-row">
-                                <label htmlFor="password">Password</label>
+                                <label htmlFor="password">
+                                    Password
+                                </label>
 
                                 <button
                                     type="button"
                                     className="forgot-password-button"
-                                    onClick={() => alert("Forgot password page will be added later.")}
+                                    onClick={() =>
+                                        alert(
+                                            "Forgot password feature will be added later."
+                                        )
+                                    }
+                                    disabled={isLoading}
                                 >
                                     Forgot Password?
                                 </button>
                             </div>
 
                             <div className="input-wrapper">
-                                <span className="input-icon">🔒</span>
+                                <span className="input-icon">
+                                    🔒
+                                </span>
 
                                 <input
                                     id="password"
                                     name="password"
-                                    type={showPassword ? "text" : "password"}
+                                    type={
+                                        showPassword
+                                            ? "text"
+                                            : "password"
+                                    }
                                     value={formData.password}
                                     onChange={handleChange}
                                     placeholder="Enter your password"
                                     autoComplete="current-password"
                                     minLength={6}
+                                    disabled={isLoading}
                                     required
                                 />
 
                                 <button
                                     type="button"
                                     className="show-password-button"
-                                    onClick={() => setShowPassword((currentValue) => !currentValue)}
-                                    aria-label={
-                                        showPassword ? "Hide password" : "Show password"
+                                    onClick={() =>
+                                        setShowPassword(
+                                            (currentValue) =>
+                                                !currentValue
+                                        )
                                     }
+                                    aria-label={
+                                        showPassword
+                                            ? "Hide password"
+                                            : "Show password"
+                                    }
+                                    disabled={isLoading}
                                 >
-                                    {showPassword ? "Hide" : "Show"}
+                                    {showPassword
+                                        ? "Hide"
+                                        : "Show"}
                                 </button>
                             </div>
                         </div>
@@ -192,30 +377,46 @@ function Login() {
                                 type="checkbox"
                                 checked={formData.rememberMe}
                                 onChange={handleChange}
+                                disabled={isLoading}
                             />
 
-                            <span>Remember me on this device</span>
+                            <span>
+                                Remember me on this device
+                            </span>
                         </label>
 
-                        <button type="submit" className="login-submit-button">
-                            Login as {role === "teacher" ? "Teacher" : "Student"}
+                        <button
+                            type="submit"
+                            className="login-submit-button"
+                            disabled={isLoading}
+                        >
+                            {isLoading
+                                ? "Logging in..."
+                                : `Login as ${role === "teacher"
+                                    ? "Teacher"
+                                    : "Student"
+                                }`}
                         </button>
                     </form>
 
                     <div className="login-divider">
-                        <span>New to Smart Attendance?</span>
+                        <span>
+                            New to Smart Attendance?
+                        </span>
                     </div>
 
                     <button
                         type="button"
                         className="create-account-button"
                         onClick={() => navigate("/register")}
+                        disabled={isLoading}
                     >
                         Create New Account
                     </button>
 
                     <p className="login-security-note">
-                        🔐 Your login information is protected and encrypted.
+                        🔐 Your login information is protected
+                        and encrypted.
                     </p>
                 </section>
             </main>
