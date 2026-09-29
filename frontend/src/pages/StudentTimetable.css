@@ -1,0 +1,800 @@
+/* ==========================================================
+   STUDENT TIMETABLE PAGE
+========================================================== */
+
+.student-timetable-page {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left,
+            rgba(0, 223, 245, 0.08),
+            transparent 30%),
+        #07111f;
+
+    color: #ffffff;
+
+    padding:
+        35px 40px 130px;
+
+    font-family:
+        Inter,
+        Arial,
+        sans-serif;
+}
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.student-timetable-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 28px;
+}
+
+.timetable-page-tag {
+    display: inline-block;
+
+    margin-bottom: 8px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    color: #00dff5;
+}
+
+.student-timetable-header h1 {
+    margin: 0;
+
+    font-size: 34px;
+    font-weight: 700;
+}
+
+.student-timetable-header p {
+    margin:
+        8px 0 0;
+
+    color: #8fa4bb;
+
+    font-size: 14px;
+}
+
+.timetable-back-button {
+    border: 1px solid rgba(0, 223, 245, 0.25);
+
+    background: rgba(0, 223, 245, 0.08);
+
+    color: #00dff5;
+
+    padding:
+        11px 18px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: 0.25s ease;
+}
+
+.timetable-back-button:hover {
+    background: #00dff5;
+    color: #07111f;
+
+    transform: translateY(-2px);
+}
+
+
+/* ==========================================================
+   STUDENT INFORMATION
+========================================================== */
+
+.timetable-student-info {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 16px;
+
+    margin-bottom: 25px;
+}
+
+.timetable-student-info>div {
+    background: #0d1a2b;
+
+    border: 1px solid rgba(255, 255, 255, 0.07);
+
+    border-radius: 14px;
+
+    padding: 18px 20px;
+}
+
+.timetable-student-info span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #71869d;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.timetable-student-info strong {
+    color: #ffffff;
+
+    font-size: 15px;
+}
+
+
+/* ==========================================================
+   COMMON SECTION
+========================================================== */
+
+.student-timetable-section {
+    background: #0d1a2b;
+
+    border: 1px solid rgba(255, 255, 255, 0.07);
+
+    border-radius: 16px;
+
+    padding: 24px;
+
+    margin-bottom: 24px;
+}
+
+.timetable-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 22px;
+}
+
+.timetable-section-heading h2 {
+    margin: 0;
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.timetable-section-heading p {
+    margin:
+        6px 0 0;
+
+    color: #7f94aa;
+
+    font-size: 13px;
+}
+
+.timetable-heading-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+
+    background: rgba(0, 223, 245, 0.08);
+
+    border: 1px solid rgba(0, 223, 245, 0.15);
+
+    border-radius: 12px;
+
+    font-size: 20px;
+}
+
+
+/* ==========================================================
+   TODAY'S TIMETABLE
+========================================================== */
+
+.today-timetable-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.today-timetable-card {
+    display: grid;
+
+    grid-template-columns:
+        170px 1fr auto;
+
+    align-items: center;
+
+    gap: 20px;
+
+    padding: 18px;
+
+    background: #091524;
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    border-radius: 13px;
+
+    transition: 0.25s ease;
+}
+
+.today-timetable-card:hover {
+    border-color: rgba(0, 223, 245, 0.3);
+
+    transform: translateY(-2px);
+}
+
+.today-class-time {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #00dff5;
+
+    font-size: 13px;
+}
+
+.today-class-time span {
+    color: #657b91;
+
+    font-size: 11px;
+}
+
+.today-class-details h3 {
+    margin:
+        0 0 7px;
+
+    font-size: 16px;
+}
+
+.today-class-details p {
+    margin: 4px 0;
+
+    color: #8296aa;
+
+    font-size: 12px;
+}
+
+.today-class-day {
+    padding:
+        7px 12px;
+
+    background: rgba(0, 223, 245, 0.08);
+
+    color: #00dff5;
+
+    border: 1px solid rgba(0, 223, 245, 0.15);
+
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* ==========================================================
+   EMPTY STATE
+========================================================== */
+
+.timetable-empty-state {
+    text-align: center;
+
+    padding:
+        45px 20px;
+
+    background: #091524;
+
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+
+    border-radius: 14px;
+}
+
+.timetable-empty-state>span {
+    display: block;
+
+    margin-bottom: 12px;
+
+    font-size: 30px;
+}
+
+.timetable-empty-state h3 {
+    margin:
+        0 0 7px;
+
+    font-size: 16px;
+}
+
+.timetable-empty-state p {
+    margin: 0;
+
+    color: #71869c;
+
+    font-size: 13px;
+}
+
+
+/* ==========================================================
+   DAY TABS
+========================================================== */
+
+.timetable-day-tabs {
+    display: flex;
+
+    gap: 10px;
+
+    margin-bottom: 22px;
+
+    overflow-x: auto;
+}
+
+.timetable-day-button {
+    min-width: 72px;
+
+    padding:
+        10px 16px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    background: #091524;
+
+    color: #8297ac;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+.timetable-day-button:hover {
+    border-color: rgba(0, 223, 245, 0.3);
+
+    color: #00dff5;
+}
+
+.timetable-day-button.active {
+    background: #00dff5;
+
+    border-color: #00dff5;
+
+    color: #07111f;
+}
+
+
+/* ==========================================================
+   SELECTED DAY
+========================================================== */
+
+.selected-day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 14px;
+}
+
+.selected-day-header h3 {
+    margin: 0;
+
+    font-size: 16px;
+}
+
+.selected-day-header span {
+    padding:
+        6px 11px;
+
+    background: rgba(0, 223, 245, 0.08);
+
+    color: #00dff5;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* ==========================================================
+   WEEKLY TABLE
+========================================================== */
+
+.student-weekly-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+
+    border-radius: 12px;
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.student-weekly-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 750px;
+
+    background: #091524;
+}
+
+.student-weekly-table thead {
+    background: #0b1929;
+}
+
+.student-weekly-table th {
+    padding:
+        14px 16px;
+
+    text-align: left;
+
+    color: #71869d;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.7px;
+}
+
+.student-weekly-table td {
+    padding:
+        15px 16px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+    color: #b8c5d2;
+
+    font-size: 13px;
+}
+
+.student-weekly-table td strong {
+    color: #ffffff;
+}
+
+.student-weekly-table tbody tr {
+    transition: 0.2s ease;
+}
+
+.student-weekly-table tbody tr:hover {
+    background: rgba(0, 223, 245, 0.03);
+}
+
+.student-weekly-table td[colspan] {
+    padding: 35px;
+
+    text-align: center;
+
+    color: #71869d;
+}
+
+
+/* ==========================================================
+   INFORMATION CARD
+========================================================== */
+
+.timetable-info-card {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 14px;
+
+    padding: 18px 20px;
+
+    margin-bottom: 24px;
+
+    background: rgba(0, 223, 245, 0.05);
+
+    border: 1px solid rgba(0, 223, 245, 0.12);
+
+    border-radius: 13px;
+}
+
+.timetable-info-card>span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 32px;
+    height: 32px;
+
+    background: rgba(0, 223, 245, 0.1);
+
+    color: #00dff5;
+
+    border-radius: 50%;
+
+    font-weight: 700;
+}
+
+.timetable-info-card h3 {
+    margin:
+        0 0 5px;
+
+    font-size: 14px;
+}
+
+.timetable-info-card p {
+    margin: 0;
+
+    color: #8195a9;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* ==========================================================
+   BOTTOM NAVIGATION
+========================================================== */
+
+.student-timetable-bottom-nav {
+    position: fixed;
+
+    left: 50%;
+    bottom: 22px;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    padding:
+        7px 9px;
+
+    background: rgba(8, 20, 34, 0.96);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 14px 40px rgba(0, 0, 0, 0.35);
+
+    backdrop-filter: blur(15px);
+
+    z-index: 1000;
+}
+
+.timetable-nav-item {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #71869b;
+
+    padding:
+        10px 13px;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition: 0.2s ease;
+}
+
+.timetable-nav-item span {
+    font-size: 15px;
+}
+
+.timetable-nav-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+
+    color: #ffffff;
+}
+
+.timetable-nav-item.active {
+    background: rgba(0, 223, 245, 0.1);
+
+    color: #00dff5;
+}
+
+.timetable-logout-nav {
+    color: #ff6677;
+}
+
+.timetable-logout-nav:hover {
+    background: rgba(255, 102, 119, 0.08);
+
+    color: #ff6677;
+}
+
+
+/* ==========================================================
+   LOADING / ERROR PAGE
+========================================================== */
+
+.timetable-page-state {
+    min-height: 70vh;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+.timetable-page-state h2 {
+    margin-bottom: 10px;
+}
+
+.timetable-page-state p {
+    color: #8296aa;
+
+    margin-bottom: 18px;
+}
+
+.timetable-page-state button {
+    min-width: 170px;
+
+    margin: 5px;
+
+    padding:
+        11px 18px;
+
+    background: #00dff5;
+
+    color: #07111f;
+
+    border: none;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-weight: 700;
+}
+
+
+/* ==========================================================
+   RESPONSIVE - TABLET
+========================================================== */
+
+@media (max-width: 900px) {
+
+    .student-timetable-page {
+        padding:
+            25px 22px 130px;
+    }
+
+    .timetable-student-info {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .today-timetable-card {
+        grid-template-columns:
+            140px 1fr;
+    }
+
+    .today-class-day {
+        grid-column:
+            1 / -1;
+
+        width: fit-content;
+    }
+
+}
+
+
+/* ==========================================================
+   RESPONSIVE - MOBILE
+========================================================== */
+
+@media (max-width: 600px) {
+
+    .student-timetable-page {
+        padding:
+            20px 15px 120px;
+    }
+
+    .student-timetable-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .student-timetable-header h1 {
+        font-size: 28px;
+    }
+
+    .timetable-back-button {
+        width: 100%;
+    }
+
+    .timetable-student-info {
+        grid-template-columns:
+            1fr;
+    }
+
+    .student-timetable-section {
+        padding: 17px;
+    }
+
+    .today-timetable-card {
+        grid-template-columns:
+            1fr;
+
+        gap: 12px;
+    }
+
+    .today-class-time {
+        flex-wrap: wrap;
+    }
+
+    .today-class-day {
+        grid-column: auto;
+    }
+
+    .timetable-day-tabs {
+        padding-bottom: 4px;
+    }
+
+    .timetable-day-button {
+        min-width: 62px;
+    }
+
+    .student-timetable-bottom-nav {
+        width: calc(100% - 24px);
+
+        justify-content: space-around;
+
+        bottom: 12px;
+
+        overflow-x: auto;
+    }
+
+    .timetable-nav-item {
+        flex-direction: column;
+
+        gap: 3px;
+
+        min-width: 62px;
+
+        padding:
+            8px 7px;
+
+        font-size: 9px;
+    }
+
+    .timetable-nav-item span {
+        font-size: 14px;
+    }
+
+}

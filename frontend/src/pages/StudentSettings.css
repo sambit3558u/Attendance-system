@@ -1,0 +1,708 @@
+/* ==========================================================
+   STUDENT SETTINGS PAGE
+========================================================== */
+
+.student-settings-page {
+    min-height: 100vh;
+    padding: 32px 40px 120px;
+
+    color: #ffffff;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(0, 223, 245, 0.08),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(118, 86, 255, 0.08),
+            transparent 30%
+        ),
+        #07111f;
+
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================
+   LOADING / ERROR STATE
+========================================================== */
+
+.student-settings-state {
+    min-height: 75vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    text-align: center;
+}
+
+.student-settings-state h2 {
+    margin: 0;
+}
+
+.student-settings-state p {
+    margin: 0;
+
+    color: #8296aa;
+}
+
+.student-settings-state button {
+    min-width: 170px;
+
+    padding: 11px 18px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #00dff5;
+    color: #07111f;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.student-settings-header {
+    max-width: 1300px;
+
+    margin: 0 auto 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.student-settings-tag {
+    display: inline-block;
+
+    margin-bottom: 8px;
+
+    color: #00dff5;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+.student-settings-header h1 {
+    margin: 0;
+
+    font-size: 34px;
+    font-weight: 800;
+}
+
+.student-settings-header p {
+    margin: 8px 0 0;
+
+    color: #8397ab;
+
+    font-size: 14px;
+}
+
+.student-settings-back-button {
+    padding: 11px 18px;
+
+    border: 1px solid rgba(0, 223, 245, 0.3);
+    border-radius: 10px;
+
+    background: rgba(0, 223, 245, 0.08);
+    color: #00dff5;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.student-settings-back-button:hover {
+    background: #00dff5;
+    color: #07111f;
+
+    transform: translateY(-1px);
+}
+
+
+/* ==========================================================
+   SUCCESS / ERROR
+========================================================== */
+
+.student-settings-success,
+.student-settings-error {
+    max-width: 1300px;
+
+    margin: 0 auto 20px;
+
+    padding: 13px 16px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.student-settings-success {
+    border: 1px solid rgba(50, 229, 155, 0.25);
+
+    background: rgba(50, 229, 155, 0.08);
+    color: #32e59b;
+}
+
+.student-settings-error {
+    border: 1px solid rgba(255, 102, 119, 0.25);
+
+    background: rgba(255, 102, 119, 0.08);
+    color: #ff6677;
+}
+
+
+/* ==========================================================
+   SETTINGS SECTION
+========================================================== */
+
+.student-settings-section {
+    max-width: 1300px;
+
+    margin: 0 auto 24px;
+
+    padding: 24px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(13, 27, 43, 0.98),
+            rgba(7, 16, 28, 0.98)
+        );
+
+    box-shadow:
+        0 14px 35px rgba(0, 0, 0, 0.22);
+}
+
+.student-settings-section-heading {
+    margin-bottom: 20px;
+}
+
+.student-settings-section-heading span {
+    color: #00dff5;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+}
+
+.student-settings-section-heading h2 {
+    margin: 6px 0 0;
+
+    font-size: 21px;
+}
+
+.student-settings-section-heading p {
+    margin: 6px 0 0;
+
+    color: #8195aa;
+
+    font-size: 13px;
+}
+
+
+/* ==========================================================
+   ACCOUNT INFORMATION
+========================================================== */
+
+.student-settings-account-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 15px;
+}
+
+.student-settings-account-item {
+    min-height: 85px;
+
+    padding: 16px 18px;
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+
+    background: #091524;
+}
+
+.student-settings-account-item span {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #71869d;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.student-settings-account-item strong {
+    color: #ffffff;
+
+    font-size: 14px;
+
+    word-break: break-word;
+}
+
+
+/* ==========================================================
+   SETTINGS LIST
+========================================================== */
+
+.student-settings-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.student-setting-row {
+    min-height: 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    padding: 17px 0;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.student-setting-row:last-child {
+    border-bottom: none;
+}
+
+.student-setting-row h3 {
+    margin: 0;
+
+    font-size: 15px;
+}
+
+.student-setting-row p {
+    margin: 6px 0 0;
+
+    color: #71869d;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* ==========================================================
+   TOGGLE SWITCH
+========================================================== */
+
+.student-setting-toggle {
+    position: relative;
+
+    flex-shrink: 0;
+
+    width: 50px;
+    height: 27px;
+
+    padding: 0;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+
+    background: #152235;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.student-setting-toggle span {
+    position: absolute;
+
+    top: 3px;
+    left: 3px;
+
+    width: 19px;
+    height: 19px;
+
+    border-radius: 50%;
+
+    background: #71869d;
+
+    transition: 0.25s ease;
+}
+
+.student-setting-toggle.active {
+    border-color: rgba(0, 223, 245, 0.5);
+
+    background: rgba(0, 223, 245, 0.2);
+}
+
+.student-setting-toggle.active span {
+    left: 26px;
+
+    background: #00dff5;
+
+    box-shadow:
+        0 0 12px rgba(0, 223, 245, 0.45);
+}
+
+.student-setting-toggle:disabled {
+    opacity: 0.35;
+
+    cursor: not-allowed;
+}
+
+
+/* ==========================================================
+   THEME OPTIONS
+========================================================== */
+
+.student-theme-options {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 16px;
+}
+
+.student-theme-card {
+    position: relative;
+
+    min-height: 110px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 20px;
+
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+
+    background: #091524;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.student-theme-card:hover {
+    border-color: rgba(0, 223, 245, 0.25);
+
+    transform: translateY(-1px);
+}
+
+.student-theme-card.active {
+    border-color: #00dff5;
+
+    background: rgba(0, 223, 245, 0.07);
+
+    box-shadow:
+        0 0 20px rgba(0, 223, 245, 0.06);
+}
+
+.student-theme-card input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+.student-theme-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: rgba(0, 223, 245, 0.08);
+
+    font-size: 22px;
+}
+
+.student-theme-card strong {
+    display: block;
+
+    font-size: 14px;
+}
+
+.student-theme-card p {
+    margin: 6px 0 0;
+
+    color: #71869d;
+
+    font-size: 11px;
+}
+
+
+/* ==========================================================
+   ACTION BUTTONS
+========================================================== */
+
+.student-settings-actions {
+    max-width: 1300px;
+
+    margin: 0 auto 28px;
+
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 12px;
+}
+
+.student-settings-reset-button,
+.student-settings-save-button {
+    min-width: 145px;
+
+    padding: 11px 18px;
+
+    border-radius: 10px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.student-settings-reset-button {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    background: #091524;
+    color: #8fa3b7;
+}
+
+.student-settings-reset-button:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+
+    color: #ffffff;
+}
+
+.student-settings-save-button {
+    border: 1px solid #00dff5;
+
+    background: #00dff5;
+    color: #07111f;
+}
+
+.student-settings-save-button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 20px rgba(0, 223, 245, 0.15);
+}
+
+.student-settings-reset-button:disabled,
+.student-settings-save-button:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* ==========================================================
+   BOTTOM NAVIGATION
+========================================================== */
+
+.student-settings-bottom-nav {
+    position: fixed;
+
+    left: 50%;
+    bottom: 20px;
+
+    transform: translateX(-50%);
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 8px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+
+    background: rgba(7, 16, 28, 0.96);
+
+    box-shadow:
+        0 14px 40px rgba(0, 0, 0, 0.35);
+
+    backdrop-filter: blur(15px);
+}
+
+.student-settings-nav-item {
+    min-width: 86px;
+
+    padding: 9px 12px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 4px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: transparent;
+    color: #71869b;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.student-settings-nav-item span {
+    font-size: 16px;
+}
+
+.student-settings-nav-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+
+    color: #ffffff;
+}
+
+.student-settings-nav-item.active {
+    background: rgba(0, 223, 245, 0.1);
+
+    color: #00dff5;
+}
+
+.student-settings-logout {
+    color: #ff6677;
+}
+
+.student-settings-logout:hover {
+    background: rgba(255, 102, 119, 0.08);
+
+    color: #ff6677;
+}
+
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (max-width: 900px) {
+
+    .student-settings-page {
+        padding:
+            25px
+            22px
+            125px;
+    }
+
+    .student-settings-account-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 650px) {
+
+    .student-settings-page {
+        padding:
+            20px
+            15px
+            120px;
+    }
+
+    .student-settings-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .student-settings-header h1 {
+        font-size: 28px;
+    }
+
+    .student-settings-back-button {
+        width: 100%;
+    }
+
+    .student-settings-section {
+        padding: 18px;
+    }
+
+    .student-settings-account-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .student-setting-row {
+        gap: 15px;
+    }
+
+    .student-theme-options {
+        grid-template-columns: 1fr;
+    }
+
+    .student-settings-actions {
+        flex-direction: column-reverse;
+    }
+
+    .student-settings-reset-button,
+    .student-settings-save-button {
+        width: 100%;
+    }
+
+    .student-settings-bottom-nav {
+        width: calc(100% - 24px);
+
+        bottom: 12px;
+
+        justify-content: space-around;
+
+        overflow-x: auto;
+
+        box-sizing: border-box;
+    }
+
+    .student-settings-nav-item {
+        min-width: 64px;
+
+        padding: 8px 7px;
+
+        font-size: 9px;
+    }
+}

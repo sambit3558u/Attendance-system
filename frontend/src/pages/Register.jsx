@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
 
@@ -9,6 +9,9 @@ function Register() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [departments, setDepartments] = useState([]);
+    const [branches, setBranches] = useState([]);
+    const [academicError, setAcademicError] = useState("");
 
     const [formData, setFormData] = useState({
         name: "",
@@ -28,6 +31,49 @@ function Register() {
         setFormData((previousData) => ({
             ...previousData,
             [name]: value,
+        }));
+    };
+
+    useEffect(() => {
+        async function loadAcademicCatalog() {
+            try {
+                const [departmentResponse, branchResponse] = await Promise.all([
+                    fetch("http://localhost:8080/api/academic/departments"),
+                    fetch("http://localhost:8080/api/academic/branches"),
+                ]);
+
+                if (!departmentResponse.ok || !branchResponse.ok) {
+                    throw new Error("Academic structure could not be loaded.");
+                }
+
+                const [departmentData, branchData] = await Promise.all([
+                    departmentResponse.json(),
+                    branchResponse.json(),
+                ]);
+
+                setDepartments(Array.isArray(departmentData) ? departmentData : []);
+                setBranches(Array.isArray(branchData) ? branchData : []);
+                setAcademicError("");
+            } catch (error) {
+                setAcademicError("Departments and branches are unavailable. Please restart the backend, then refresh this page.");
+            }
+        }
+
+        loadAcademicCatalog();
+    }, []);
+
+    const branchesForDepartment = branches.filter(
+        (branch) => String(branch.departmentId) === String(
+            departments.find((department) => department.name === formData.department)?.id || ""
+        )
+    );
+
+    const handleDepartmentChange = (event) => {
+        const department = event.target.value;
+        setFormData((previousData) => ({
+            ...previousData,
+            department,
+            branch: "",
         }));
     };
 
@@ -204,8 +250,8 @@ function Register() {
                         <button
                             type="button"
                             className={`register-role-option ${role === "teacher"
-                                    ? "active register-teacher-active"
-                                    : ""
+                                ? "active register-teacher-active"
+                                : ""
                                 }`}
                             onClick={() =>
                                 handleRoleChange("teacher")
@@ -228,8 +274,8 @@ function Register() {
                         <button
                             type="button"
                             className={`register-role-option ${role === "student"
-                                    ? "active register-student-active"
-                                    : ""
+                                ? "active register-student-active"
+                                : ""
                                 }`}
                             onClick={() =>
                                 handleRoleChange("student")
@@ -249,6 +295,12 @@ function Register() {
                             </span>
                         </button>
                     </div>
+
+                    {academicError && (
+                        <p className="register-academic-error">
+                            {academicError}
+                        </p>
+                    )}
 
                     <form
                         className="register-form"
@@ -368,6 +420,13 @@ function Register() {
                                                 Select Department
                                             </option>
 
+                                            {departments.map((department) => (
+                                                <option key={department.id} value={department.name}>
+                                                    {department.name}
+                                                </option>
+                                            ))}
+
+                                            {false && <>
                                             <option value="DRIEMS Institute of Health Sciences and Hospital">
                                                 DRIEMS Institute of Health Sciences and Hospital
                                             </option>
@@ -427,6 +486,7 @@ function Register() {
                                             <option value="School of Agriculture">
                                                 School of Agriculture
                                             </option>
+                                            </>}
                                         </select>
                                     </div>
                                 </div>
@@ -436,6 +496,28 @@ function Register() {
 
                             {role === "student" && (
                                 <>
+                                    <div className="register-form-group">
+                                        <label htmlFor="department">Department</label>
+                                        <div className="register-input-wrapper">
+                                            <span className="register-input-icon">🏫</span>
+                                            <select
+                                                id="department"
+                                                name="department"
+                                                value={formData.department}
+                                                onChange={handleDepartmentChange}
+                                                disabled={isLoading}
+                                                required
+                                            >
+                                                <option value="">Select Department</option>
+                                                {departments.map((department) => (
+                                                    <option key={department.id} value={department.name}>
+                                                        {department.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     <div className="register-form-group">
                                         <label htmlFor="rollNumber">
                                             Roll Number
@@ -483,6 +565,13 @@ function Register() {
                                                     Select Branch
                                                 </option>
 
+                                            {branchesForDepartment.map((branch) => (
+                                                <option key={branch.id} value={branch.name}>
+                                                    {branch.name}
+                                                </option>
+                                            ))}
+
+                                            {false && <>
                                                 <option value="Aeronautical Engineering">
                                                     Aeronautical Engineering
                                                 </option>
@@ -578,6 +667,7 @@ function Register() {
                                                 <option value="Textile Engineering">
                                                     Textile Engineering
                                                 </option>
+                                            </>}
                                             </select>
                                         </div>
                                     </div>

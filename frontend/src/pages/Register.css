@@ -1,5 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
+.register-academic-error {
+    margin: 12px 0 0;
+    padding: 10px 12px;
+    border: 1px solid #ffcaca;
+    border-radius: 9px;
+    background: #fff4f4;
+    color: #b42318;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
 /* =========================================================
    REGISTER PAGE THEME VARIABLES
    ========================================================= */

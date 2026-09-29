@@ -1,0 +1,713 @@
+/* ==========================================================
+   STUDENT NOTIFICATIONS PAGE
+========================================================== */
+
+.student-notifications-page {
+    min-height: 100vh;
+    padding: 32px 40px 120px;
+
+    color: #ffffff;
+
+    background:
+        radial-gradient(circle at top left,
+            rgba(0, 223, 245, 0.08),
+            transparent 30%),
+        radial-gradient(circle at bottom right,
+            rgba(118, 86, 255, 0.08),
+            transparent 30%),
+        #07111f;
+
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================
+   LOADING / ERROR STATE
+========================================================== */
+
+.student-notifications-state {
+    min-height: 75vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    text-align: center;
+}
+
+.student-notifications-state h2 {
+    margin: 0;
+}
+
+.student-notifications-state p {
+    margin: 0;
+
+    color: #8296aa;
+}
+
+.student-notifications-state button {
+    min-width: 170px;
+
+    padding: 11px 18px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #00dff5;
+    color: #07111f;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.student-notifications-header {
+    max-width: 1300px;
+
+    margin: 0 auto 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.student-notifications-tag {
+    display: inline-block;
+
+    margin-bottom: 8px;
+
+    color: #00dff5;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+.student-notifications-header h1 {
+    margin: 0;
+
+    font-size: 34px;
+    font-weight: 800;
+}
+
+.student-notifications-header p {
+    margin: 8px 0 0;
+
+    color: #8397ab;
+
+    font-size: 14px;
+}
+
+.student-notifications-back-button {
+    padding: 11px 18px;
+
+    border: 1px solid rgba(0, 223, 245, 0.3);
+    border-radius: 10px;
+
+    background: rgba(0, 223, 245, 0.08);
+    color: #00dff5;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.student-notifications-back-button:hover {
+    background: #00dff5;
+    color: #07111f;
+
+    transform: translateY(-1px);
+}
+
+
+/* ==========================================================
+   SUMMARY
+========================================================== */
+
+.student-notifications-summary {
+    max-width: 1300px;
+
+    margin: 0 auto 24px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 16px;
+}
+
+.student-notifications-summary>div {
+    padding: 18px;
+
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+
+    background:
+        linear-gradient(145deg,
+            rgba(13, 27, 43, 0.98),
+            rgba(7, 16, 28, 0.98));
+}
+
+.student-notifications-summary span {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #71869d;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.student-notifications-summary strong {
+    font-size: 28px;
+    font-weight: 800;
+
+    color: #ffffff;
+}
+
+
+/* ==========================================================
+   SUCCESS / ERROR
+========================================================== */
+
+.student-notifications-success,
+.student-notifications-error {
+    max-width: 1300px;
+
+    margin: 0 auto 20px;
+
+    padding: 13px 16px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.student-notifications-success {
+    border: 1px solid rgba(50, 229, 155, 0.25);
+
+    background: rgba(50, 229, 155, 0.08);
+    color: #32e59b;
+}
+
+.student-notifications-error {
+    border: 1px solid rgba(255, 102, 119, 0.25);
+
+    background: rgba(255, 102, 119, 0.08);
+    color: #ff6677;
+}
+
+
+/* ==========================================================
+   NOTIFICATION SECTION
+========================================================== */
+
+.student-notifications-section {
+    max-width: 1300px;
+
+    margin: 0 auto 24px;
+
+    padding: 24px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+
+    background:
+        linear-gradient(145deg,
+            rgba(13, 27, 43, 0.98),
+            rgba(7, 16, 28, 0.98));
+
+    box-shadow:
+        0 14px 35px rgba(0, 0, 0, 0.22);
+}
+
+.student-notifications-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+.student-notifications-section-heading h2 {
+    margin: 0;
+
+    font-size: 21px;
+}
+
+.student-notifications-section-heading p {
+    margin: 6px 0 0;
+
+    color: #8195aa;
+
+    font-size: 13px;
+}
+
+.mark-all-read-button {
+    padding: 10px 16px;
+
+    border: 1px solid rgba(0, 223, 245, 0.25);
+    border-radius: 10px;
+
+    background: rgba(0, 223, 245, 0.08);
+    color: #00dff5;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.mark-all-read-button:hover {
+    background: #00dff5;
+    color: #07111f;
+}
+
+.mark-all-read-button:disabled {
+    opacity: 0.45;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* ==========================================================
+   NOTIFICATION LIST
+========================================================== */
+
+.student-notification-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+/* ==========================================================
+   NOTIFICATION CARD
+========================================================== */
+
+.student-notification-card {
+    width: 100%;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 15px;
+
+    padding: 17px;
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 13px;
+
+    background: #091524;
+    color: #ffffff;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: 0.22s ease;
+}
+
+.student-notification-card:hover {
+    transform: translateY(-1px);
+
+    border-color: rgba(0, 223, 245, 0.25);
+
+    background: #0b1929;
+}
+
+.student-notification-card.unread {
+    border-color: rgba(0, 223, 245, 0.22);
+
+    background:
+        linear-gradient(90deg,
+            rgba(0, 223, 245, 0.06),
+            #091524);
+}
+
+
+/* ==========================================================
+   NOTIFICATION TYPE COLORS
+========================================================== */
+
+.notification-live-class {
+    border-left: 3px solid #00dff5;
+}
+
+.notification-attendance {
+    border-left: 3px solid #32e59b;
+}
+
+.notification-warning {
+    border-left: 3px solid #ffb84d;
+}
+
+.notification-timetable {
+    border-left: 3px solid #8c7cff;
+}
+
+
+/* ==========================================================
+   ICON
+========================================================== */
+
+.student-notification-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: rgba(0, 223, 245, 0.08);
+
+    font-size: 21px;
+}
+
+
+/* ==========================================================
+   CONTENT
+========================================================== */
+
+.student-notification-content {
+    flex: 1;
+}
+
+.student-notification-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+.student-notification-title-row h3 {
+    margin: 0;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.student-notification-content p {
+    margin: 7px 0;
+
+    color: #8195aa;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+.student-notification-content small {
+    color: #60758b;
+
+    font-size: 10px;
+}
+
+
+/* ==========================================================
+   UNREAD DOT
+========================================================== */
+
+.student-notification-unread-dot {
+    width: 8px;
+    height: 8px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #00dff5;
+
+    box-shadow:
+        0 0 9px rgba(0, 223, 245, 0.6);
+}
+
+
+/* ==========================================================
+   EMPTY STATE
+========================================================== */
+
+.student-notification-empty {
+    padding: 55px 20px;
+
+    text-align: center;
+
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+
+    background: #091524;
+}
+
+.student-notification-empty>span {
+    display: block;
+
+    margin-bottom: 14px;
+
+    font-size: 34px;
+}
+
+.student-notification-empty h3 {
+    margin: 0 0 7px;
+
+    font-size: 16px;
+}
+
+.student-notification-empty p {
+    margin: 0;
+
+    color: #71869d;
+
+    font-size: 12px;
+}
+
+
+/* ==========================================================
+   INFORMATION
+========================================================== */
+
+.student-notifications-info {
+    max-width: 1300px;
+
+    margin: 0 auto 25px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 15px 18px;
+
+    border: 1px solid rgba(0, 223, 245, 0.12);
+    border-radius: 12px;
+
+    background: rgba(0, 223, 245, 0.05);
+}
+
+.student-notifications-info>span {
+    width: 30px;
+    height: 30px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(0, 223, 245, 0.1);
+
+    color: #00dff5;
+
+    font-weight: 700;
+}
+
+.student-notifications-info p {
+    margin: 0;
+
+    color: #8195aa;
+
+    font-size: 12px;
+}
+
+
+/* ==========================================================
+   BOTTOM NAVIGATION
+========================================================== */
+
+.student-notifications-bottom-nav {
+    position: fixed;
+
+    left: 50%;
+    bottom: 20px;
+
+    transform: translateX(-50%);
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 8px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+
+    background: rgba(7, 16, 28, 0.96);
+
+    box-shadow:
+        0 14px 40px rgba(0, 0, 0, 0.35);
+
+    backdrop-filter: blur(15px);
+}
+
+.student-notifications-nav-item {
+    min-width: 86px;
+
+    padding: 9px 12px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 4px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: transparent;
+    color: #71869b;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.student-notifications-nav-item span {
+    font-size: 16px;
+}
+
+.student-notifications-nav-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+
+    color: #ffffff;
+}
+
+.student-notifications-logout {
+    color: #ff6677;
+}
+
+.student-notifications-logout:hover {
+    background: rgba(255, 102, 119, 0.08);
+
+    color: #ff6677;
+}
+
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (max-width: 900px) {
+
+    .student-notifications-page {
+        padding:
+            25px 22px 125px;
+    }
+
+    .student-notifications-summary {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 650px) {
+
+    .student-notifications-page {
+        padding:
+            20px 15px 120px;
+    }
+
+    .student-notifications-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .student-notifications-header h1 {
+        font-size: 28px;
+    }
+
+    .student-notifications-back-button {
+        width: 100%;
+    }
+
+    .student-notifications-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .student-notifications-section {
+        padding: 18px;
+    }
+
+    .student-notifications-section-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .mark-all-read-button {
+        width: 100%;
+    }
+
+    .student-notification-card {
+        gap: 12px;
+
+        padding: 14px;
+    }
+
+    .student-notification-icon {
+        width: 38px;
+        height: 38px;
+
+        font-size: 18px;
+    }
+
+    .student-notifications-bottom-nav {
+        width: calc(100% - 24px);
+
+        bottom: 12px;
+
+        justify-content: space-around;
+
+        overflow-x: auto;
+
+        box-sizing: border-box;
+    }
+
+    .student-notifications-nav-item {
+        min-width: 64px;
+
+        padding: 8px 7px;
+
+        font-size: 9px;
+    }
+}

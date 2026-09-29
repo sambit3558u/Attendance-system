@@ -5,7 +5,6 @@ import "./Login.css";
 function Login() {
     const navigate = useNavigate();
 
-    const [role, setRole] = useState("teacher");
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -55,13 +54,8 @@ function Login() {
             const loginData = {
                 email: formData.email.trim(),
                 password: formData.password,
-                role: role.toUpperCase(),
-
-                // One-device restriction sirf Student ke liye
-                deviceId:
-                    role === "student"
-                        ? getOrCreateDeviceId()
-                        : null,
+                // Backend email se account role identify karega.
+                deviceId: getOrCreateDeviceId(),
             };
 
             console.log("Login request:", loginData);
@@ -132,6 +126,8 @@ function Login() {
                 navigate("/teacher-dashboard");
             } else if (data.role === "STUDENT") {
                 navigate("/student-dashboard");
+            } else if (data.role === "ADMIN") {
+                navigate("/admin-dashboard");
             } else {
                 throw new Error(
                     "Invalid user role received from backend."
@@ -219,57 +215,8 @@ function Login() {
                         <h2>Login to your account</h2>
 
                         <p>
-                            Select your role and enter your
-                            login details.
+                            Enter your email and password to continue.
                         </p>
-                    </div>
-
-                    <div className="role-selector">
-                        <button
-                            type="button"
-                            className={`role-option ${role === "teacher"
-                                    ? "active teacher-active"
-                                    : ""
-                                }`}
-                            onClick={() => setRole("teacher")}
-                            aria-pressed={role === "teacher"}
-                            disabled={isLoading}
-                        >
-                            <span className="role-option-icon">
-                                👨‍🏫
-                            </span>
-
-                            <span>
-                                <strong>Teacher</strong>
-
-                                <small>
-                                    Manage classes
-                                </small>
-                            </span>
-                        </button>
-
-                        <button
-                            type="button"
-                            className={`role-option ${role === "student"
-                                    ? "active student-active"
-                                    : ""
-                                }`}
-                            onClick={() => setRole("student")}
-                            aria-pressed={role === "student"}
-                            disabled={isLoading}
-                        >
-                            <span className="role-option-icon">
-                                🎓
-                            </span>
-
-                            <span>
-                                <strong>Student</strong>
-
-                                <small>
-                                    Mark attendance
-                                </small>
-                            </span>
-                        </button>
                     </div>
 
                     <form
@@ -278,9 +225,7 @@ function Login() {
                     >
                         <div className="form-group">
                             <label htmlFor="email">
-                                {role === "student"
-                                    ? "Gmail ID"
-                                    : "Email ID"}
+                                Email ID
                             </label>
 
                             <div className="input-wrapper">
@@ -294,11 +239,7 @@ function Login() {
                                     type="email"
                                     value={formData.email}
                                     onChange={handleChange}
-                                    placeholder={
-                                        role === "student"
-                                            ? "Enter your Gmail ID"
-                                            : "Enter your email ID"
-                                    }
+                                    placeholder="Enter your email ID"
                                     autoComplete="email"
                                     disabled={isLoading}
                                     required
@@ -315,11 +256,7 @@ function Login() {
                                 <button
                                     type="button"
                                     className="forgot-password-button"
-                                    onClick={() =>
-                                        alert(
-                                            "Forgot password feature will be added later."
-                                        )
-                                    }
+                                    onClick={() => navigate("/forgot-password")}
                                     disabled={isLoading}
                                 >
                                     Forgot Password?
@@ -392,10 +329,7 @@ function Login() {
                         >
                             {isLoading
                                 ? "Logging in..."
-                                : `Login as ${role === "teacher"
-                                    ? "Teacher"
-                                    : "Student"
-                                }`}
+                                : "Login"}
                         </button>
                     </form>
 
@@ -420,7 +354,9 @@ function Login() {
                     </p>
                 </section>
             </main>
+
         </div>
+
     );
 }
 

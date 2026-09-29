@@ -3,6 +3,9 @@ package com.smartattendance.backend.service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,70 +15,70 @@ import org.springframework.transaction.annotation.Transactional;
 import com.smartattendance.backend.dto.AuthResponse;
 import com.smartattendance.backend.dto.LoginRequest;
 import com.smartattendance.backend.dto.RegisterRequest;
+import com.smartattendance.backend.dto.ForgotPasswordRequest;
+import com.smartattendance.backend.dto.ResetPasswordRequest;
+import com.smartattendance.backend.dto.PasswordResetResponse;
 import com.smartattendance.backend.entity.Role;
 import com.smartattendance.backend.entity.User;
+import com.smartattendance.backend.entity.DeviceApprovalRequest;
+import com.smartattendance.backend.entity.DeviceApprovalStatus;
 import com.smartattendance.backend.exception.ApiException;
 import com.smartattendance.backend.repository.UserRepository;
+import com.smartattendance.backend.repository.DeviceApprovalRequestRepository;
 import com.smartattendance.backend.security.JwtService;
 
 import lombok.RequiredArgsConstructor;
-
-/**
- * ==========================================================
- * Authentication Service
- * ----------------------------------------------------------
- * This service contains the main authentication logic.
- *
- * Responsibilities:
- *
- * 1. Register Teacher and Student accounts.
- * 2. Validate role-specific registration fields.
- * 3. Check duplicate email, phone and roll number.
- * 4. Hash passwords using BCrypt.
- * 5. Verify login credentials.
- * 6. Verify selected role.
- * 7. Apply one-device login for Students.
- * 8. Generate a 30-day JWT token.
- * 9. Apply a 5-minute login cooldown after manual logout.
- * ==========================================================
- */
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
 
-    /**
-     * Performs database operations for User records.
-     */
+    private static final long RESET_TOKEN_MINUTES = 10;
+    private final Map<String, PasswordResetGrant> passwordResetTokens = new ConcurrentHashMap<>();
+
+    private record PasswordResetGrant(String email, Role role, LocalDateTime expiresAt) {}
+
     private final UserRepository userRepository;
-
-    /**
-     * Hashes passwords during registration and verifies
-     * passwords during login.
-     */
     private final PasswordEncoder passwordEncoder;
-
-    /**
-     * Generates JWT authentication tokens.
-     */
     private final JwtService jwtService;
+    private final DeviceApprovalRequestRepository deviceApprovals;
 
-    /**
-     * Manual logout cooldown duration.
-     *
-     * Current value:
-     * 300000 milliseconds = 5 minutes
-     */
+    @Transactional
+    public PasswordResetResponse requestPasswordReset(ForgotPasswordRequest request) {
+        String email = normalizeEmail(request.getEmail());
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ApiException("No account found for this email"));
+        if (user.getRole() != Role.TEACHER && user.getRole() != Role.STUDENT) {
+            throw new ApiException("Password reset is available only for Teacher and Student accounts");
+        }
+        String token = UUID.randomUUID().toString().replace("-", "");
+        passwordResetTokens.put(token, new PasswordResetGrant(email, user.getRole(), LocalDateTime.now().plusMinutes(RESET_TOKEN_MINUTES)));
+        return new PasswordResetResponse(true, "Reset token generated. It expires in 10 minutes.", token);
+    }
+
+    @Transactional
+    public PasswordResetResponse resetPassword(ResetPasswordRequest request) {
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) throw new ApiException("Passwords do not match");
+        PasswordResetGrant grant = passwordResetTokens.get(request.getToken());
+        if (grant == null || LocalDateTime.now().isAfter(grant.expiresAt())) {
+            passwordResetTokens.remove(request.getToken());
+            throw new ApiException("Reset token is invalid or expired");
+        }
+        User user = userRepository.findByEmail(grant.email()).orElseThrow(() -> new ApiException("Account not found"));
+        if (user.getRole() != grant.role()) throw new ApiException("Invalid reset request");
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.setLoginBlockedUntil(null);
+        userRepository.save(user);
+        passwordResetTokens.remove(request.getToken());
+        return new PasswordResetResponse(true, "Password reset successful. You can log in now.", null);
+    }
+
     @Value("${auth.login-cooldown}")
     private long loginCooldown;
 
-    /**
-     * ======================================================
-     * Register User
-     * ------------------------------------------------------
-     * Creates either a Teacher or Student account.
-     * ======================================================
-     */
+    /* =====================================================
+       REGISTER
+    ===================================================== */
+
     @Transactional
     public AuthResponse register(RegisterRequest request) {
 
@@ -126,6 +129,10 @@ public class AuthService {
                 )
                 .role(request.getRole());
 
+        /* =========================
+           TEACHER
+        ========================= */
+
         if (request.getRole() == Role.TEACHER) {
 
             String department = normalizeRequiredText(
@@ -139,6 +146,10 @@ public class AuthService {
                     .branch(null)
                     .semester(null)
                     .deviceId(null);
+
+        /* =========================
+           STUDENT
+        ========================= */
 
         } else if (request.getRole() == Role.STUDENT) {
 
@@ -154,16 +165,21 @@ public class AuthService {
 
             Integer semester = request.getSemester();
 
-            if (semester == null
-                    || semester < 1
-                    || semester > 8) {
-
+            if (
+                    semester == null ||
+                    semester < 1 ||
+                    semester > 8
+            ) {
                 throw new ApiException(
                         "Semester must be between 1 and 8"
                 );
             }
 
-            if (userRepository.existsByRollNumber(rollNumber)) {
+            if (
+                    userRepository.existsByRollNumber(
+                            rollNumber
+                    )
+            ) {
                 throw new ApiException(
                         "Roll Number is already registered"
                 );
@@ -173,21 +189,11 @@ public class AuthService {
                     .rollNumber(rollNumber)
                     .branch(branch)
                     .semester(semester)
-
-                    /*
-                     * Student account register hote waqt
-                     * device ID null rahega.
-                     *
-                     * First login ke time save hoga.
-                     */
                     .deviceId(null)
-
-                    /*
-                     * Teacher field Student ke liye null.
-                     */
                     .department(null);
 
         } else {
+
             throw new ApiException(
                     "Invalid role selected"
             );
@@ -213,21 +219,10 @@ public class AuthService {
                 .build();
     }
 
-    /**
-     * ======================================================
-     * Login User
-     * ------------------------------------------------------
-     * Verifies:
-     *
-     * 1. Email
-     * 2. Password
-     * 3. Selected role
-     * 4. Login cooldown
-     * 5. Student device ID
-     *
-     * Generates a 30-day JWT token after successful login.
-     * ======================================================
-     */
+    /* =====================================================
+       LOGIN
+    ===================================================== */
+
     @Transactional
     public AuthResponse login(LoginRequest request) {
 
@@ -244,29 +239,21 @@ public class AuthService {
                 );
 
         /*
-         * Manual logout ke baad 5-minute cooldown check.
+         * Manual logout ke baad cooldown check.
          */
         validateLoginCooldown(user);
 
         /*
-         * Frontend selected role aur database role
-         * same hona chahiye.
+         * Selected role database role se match hona chahiye.
          */
-        if (request.getRole() == null
-                || user.getRole() != request.getRole()) {
+        // Role is derived from the email account. The client no longer
+        // chooses a role, preventing mismatched-role login attempts.
 
-            throw new ApiException(
-                    "Selected role does not match this account"
-            );
-        }
-
-        /*
-         * Raw password ko stored BCrypt hash se compare karo.
-         */
-        boolean passwordMatches = passwordEncoder.matches(
-                request.getPassword(),
-                user.getPassword()
-        );
+        boolean passwordMatches =
+                passwordEncoder.matches(
+                        request.getPassword(),
+                        user.getPassword()
+                );
 
         if (!passwordMatches) {
             throw new ApiException(
@@ -274,25 +261,19 @@ public class AuthService {
             );
         }
 
-        /*
-         * ==================================================
-         * One Device Login
-         * --------------------------------------------------
-         * Sirf Student accounts ke liye apply hoga.
-         * Teacher multiple devices se login kar sakta hai.
-         * ==================================================
-         */
+        /* =========================
+           STUDENT ONE DEVICE LOGIN
+        ========================= */
+
         if (user.getRole() == Role.STUDENT) {
 
-            String currentDeviceId = request.getDeviceId();
+            String currentDeviceId =
+                    request.getDeviceId();
 
-            /*
-             * Student login me frontend deviceId
-             * automatically bhejega.
-             */
-            if (currentDeviceId == null
-                    || currentDeviceId.isBlank()) {
-
+            if (
+                    currentDeviceId == null ||
+                    currentDeviceId.isBlank()
+            ) {
                 throw new ApiException(
                         "Device ID is required for Student login"
                 );
@@ -303,36 +284,33 @@ public class AuthService {
 
             /*
              * First login:
-             *
-             * Agar database me deviceId null hai,
-             * current browser ka deviceId save karo.
+             * current browser/device ko account se bind karo.
              */
-            if (user.getDeviceId() == null
-                    || user.getDeviceId().isBlank()) {
+            if (
+                    user.getDeviceId() == null ||
+                    user.getDeviceId().isBlank()
+            ) {
 
-                user.setDeviceId(normalizedDeviceId);
+                user.setDeviceId(
+                        normalizedDeviceId
+                );
 
                 userRepository.save(user);
 
             /*
-             * Next login:
-             *
-             * Agar stored deviceId aur current deviceId
-             * same nahi hain, login reject karo.
+             * Existing binding:
+             * doosre device se login reject.
              */
-            } else if (!user.getDeviceId()
-                    .equals(normalizedDeviceId)) {
-
-                throw new ApiException(
-                        "This student account is already linked to another device"
-                );
+            } else if (!user.getDeviceId().equals(normalizedDeviceId)) {
+                deviceApprovals.findFirstByStudentIdAndDeviceIdAndStatusOrderByRequestedAtDesc(user.getId(), normalizedDeviceId, DeviceApprovalStatus.PENDING)
+                        .ifPresentOrElse(r -> { throw new ApiException("New device approval is pending. Admin approval is required within 24 hours."); }, () -> {
+                            LocalDateTime now = LocalDateTime.now();
+                            deviceApprovals.save(DeviceApprovalRequest.builder().student(user).deviceId(normalizedDeviceId).requestedAt(now).expiresAt(now.plusHours(24)).status(DeviceApprovalStatus.PENDING).build());
+                            throw new ApiException("New device approval request sent to Admin. Try again after approval.");
+                        });
             }
         }
 
-        /*
-         * Sab checks successful hone ke baad
-         * JWT token generate hoga.
-         */
         String accessToken =
                 jwtService.generateToken(user);
 
@@ -350,17 +328,15 @@ public class AuthService {
                 .build();
     }
 
-    /**
-     * ======================================================
-     * Manual Logout
-     * ------------------------------------------------------
-     * Stores logout time and blocks login for 5 minutes.
-     * ======================================================
-     */
+    /* =====================================================
+       LOGOUT
+    ===================================================== */
+
     @Transactional
     public AuthResponse logout(String email) {
 
-        String normalizedEmail = normalizeEmail(email);
+        String normalizedEmail =
+                normalizeEmail(email);
 
         User user = userRepository
                 .findByEmail(normalizedEmail)
@@ -370,9 +346,12 @@ public class AuthService {
                         )
                 );
 
-        LocalDateTime logoutTime = LocalDateTime.now();
+        LocalDateTime logoutTime =
+                LocalDateTime.now();
 
-        user.setLastLogoutAt(logoutTime);
+        user.setLastLogoutAt(
+                logoutTime
+        );
 
         user.setLoginBlockedUntil(
                 logoutTime.plusNanos(
@@ -396,32 +375,36 @@ public class AuthService {
                 .build();
     }
 
-    /**
-     * ======================================================
-     * Validate Login Cooldown
-     * ------------------------------------------------------
-     * Prevents login until the 5-minute logout cooldown ends.
-     * ======================================================
-     */
-    private void validateLoginCooldown(User user) {
+    /* =====================================================
+       LOGIN COOLDOWN
+    ===================================================== */
+
+    private void validateLoginCooldown(
+            User user
+    ) {
 
         LocalDateTime blockedUntil =
                 user.getLoginBlockedUntil();
 
-        if (blockedUntil != null
-                && LocalDateTime.now().isBefore(blockedUntil)) {
+        if (
+                blockedUntil != null &&
+                LocalDateTime.now()
+                        .isBefore(blockedUntil)
+        ) {
 
-            long remainingSeconds = Duration
-                    .between(
-                            LocalDateTime.now(),
-                            blockedUntil
-                    )
-                    .toSeconds();
+            long remainingSeconds =
+                    Duration
+                            .between(
+                                    LocalDateTime.now(),
+                                    blockedUntil
+                            )
+                            .toSeconds();
 
-            long remainingMinutes = Math.max(
-                    1,
-                    (remainingSeconds + 59) / 60
-            );
+            long remainingMinutes =
+                    Math.max(
+                            1,
+                            (remainingSeconds + 59) / 60
+                    );
 
             throw new ApiException(
                     "Please wait "
@@ -431,17 +414,19 @@ public class AuthService {
         }
     }
 
-    /**
-     * ======================================================
-     * Password Validation
-     * ======================================================
-     */
+    /* =====================================================
+       PASSWORD VALIDATION
+    ===================================================== */
+
     private void validatePasswords(
             String password,
             String confirmPassword
     ) {
 
-        if (password == null || password.isBlank()) {
+        if (
+                password == null ||
+                password.isBlank()
+        ) {
             throw new ApiException(
                     "Password is required"
             );
@@ -453,9 +438,10 @@ public class AuthService {
             );
         }
 
-        if (confirmPassword == null
-                || confirmPassword.isBlank()) {
-
+        if (
+                confirmPassword == null ||
+                confirmPassword.isBlank()
+        ) {
             throw new ApiException(
                     "Confirm Password is required"
             );
@@ -468,14 +454,18 @@ public class AuthService {
         }
     }
 
-    /**
-     * ======================================================
-     * Normalize Email
-     * ======================================================
-     */
-    private String normalizeEmail(String email) {
+    /* =====================================================
+       EMAIL NORMALIZATION
+    ===================================================== */
 
-        if (email == null || email.isBlank()) {
+    private String normalizeEmail(
+            String email
+    ) {
+
+        if (
+                email == null ||
+                email.isBlank()
+        ) {
             throw new ApiException(
                     "Email is required"
             );
@@ -486,22 +476,31 @@ public class AuthService {
                 .toLowerCase(Locale.ROOT);
     }
 
-    /**
-     * ======================================================
-     * Normalize Phone Number
-     * ======================================================
-     */
-    private String normalizePhone(String phone) {
+    /* =====================================================
+       PHONE NORMALIZATION
+    ===================================================== */
 
-        if (phone == null || phone.isBlank()) {
+    private String normalizePhone(
+            String phone
+    ) {
+
+        if (
+                phone == null ||
+                phone.isBlank()
+        ) {
             throw new ApiException(
                     "Phone Number is required"
             );
         }
 
-        String normalizedPhone = phone.trim();
+        String normalizedPhone =
+                phone.trim();
 
-        if (!normalizedPhone.matches("\\d{10}")) {
+        if (
+                !normalizedPhone.matches(
+                        "\\d{10}"
+                )
+        ) {
             throw new ApiException(
                     "Phone Number must contain exactly 10 digits"
             );
@@ -510,17 +509,19 @@ public class AuthService {
         return normalizedPhone;
     }
 
-    /**
-     * ======================================================
-     * Normalize Required Text
-     * ======================================================
-     */
+    /* =====================================================
+       REQUIRED TEXT
+    ===================================================== */
+
     private String normalizeRequiredText(
             String value,
             String errorMessage
     ) {
 
-        if (value == null || value.isBlank()) {
+        if (
+                value == null ||
+                value.isBlank()
+        ) {
             throw new ApiException(
                     errorMessage
             );

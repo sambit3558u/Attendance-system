@@ -10,196 +10,318 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-/**
- * ==========================================================
- * Security Configuration
- * ----------------------------------------------------------
- * This class controls application security.
- *
- * Main responsibilities:
- * 1. Configure password hashing using BCrypt.
- * 2. Allow public access to authentication APIs.
- * 3. Protect all other backend APIs.
- * 4. Disable server-side login sessions.
- * 5. Configure CORS for the React frontend.
- * ==========================================================
- */
+import com.smartattendance.backend.security.JwtAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
 
-    /**
-     * ======================================================
-     * Password Encoder
-     * ------------------------------------------------------
-     * BCrypt converts a plain password into a secure,
-     * one-way password hash.
-     *
-     * Example:
-     * Plain password:
-     * Sambit@123
-     *
-     * Stored password:
-     * $2a$10$...
-     *
-     * The original password cannot be recovered from the hash.
-     * ======================================================
-     */
+    // =====================================================
+    // JWT FILTER
+    // =====================================================
+
+    private final JwtAuthenticationFilter
+            jwtAuthenticationFilter;
+
+    public SecurityConfig(
+            JwtAuthenticationFilter jwtAuthenticationFilter
+    ) {
+
+        this.jwtAuthenticationFilter =
+                jwtAuthenticationFilter;
+    }
+
+    // =====================================================
+    // PASSWORD ENCODER
+    // =====================================================
+
     @Bean
     public PasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * ======================================================
-     * Security Filter Chain
-     * ------------------------------------------------------
-     * Defines which URLs are public and which URLs require
-     * authentication.
-     * ======================================================
-     */
+    // =====================================================
+    // SECURITY FILTER CHAIN
+    // =====================================================
+
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http
     ) throws Exception {
 
         http
-                /*
-                 * This backend will use token-based authentication.
-                 *
-                 * We are not using Spring's traditional HTML form
-                 * login or server session authentication.
-                 */
-                .csrf(csrf -> csrf.disable())
 
-                /*
-                 * Enable CORS using the configuration provided
-                 * in corsConfigurationSource().
-                 */
-                .cors(Customizer.withDefaults())
+                // =================================================
+                // CSRF
+                // =================================================
 
-                /*
-                 * JWT authentication is stateless.
-                 *
-                 * Spring Security will not create or use an
-                 * HTTP session to remember logged-in users.
-                 */
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS
-                        )
+                .csrf(
+                        csrf ->
+                                csrf.disable()
                 )
 
-                /*
-                 * Define URL access rules.
-                 */
-                .authorizeHttpRequests(authorize -> authorize
+                // =================================================
+                // CORS
+                // =================================================
 
-                        /*
-                         * Registration, login, refresh-token,
-                         * and logout APIs will remain public.
-                         */
-                        .requestMatchers("/api/auth/**").permitAll()
-
-                        /*
-                         * Allow Spring Boot error responses.
-                         */
-                        .requestMatchers("/error").permitAll()
-
-                        /*
-                         * Every other request must be authenticated.
-                         */
-                        .anyRequest().authenticated()
+                .cors(
+                        Customizer.withDefaults()
                 )
 
-                /*
-                 * Disable Spring Security's default login page.
-                 */
-                .formLogin(form -> form.disable())
+                // =================================================
+                // SESSION
+                // =================================================
 
-                /*
-                 * Disable HTTP Basic authentication popup.
-                 */
-                .httpBasic(httpBasic -> httpBasic.disable());
+                .sessionManagement(
+                        session ->
+                                session.sessionCreationPolicy(
+                                        SessionCreationPolicy.STATELESS
+                                )
+                )
+
+                // =================================================
+                // AUTHORIZATION
+                // =================================================
+
+                .authorizeHttpRequests(
+                        authorize ->
+                                authorize
+
+                                        // =================================
+                                        // PUBLIC
+                                        // =================================
+
+                                        .requestMatchers(
+                                                "/",
+                                                "/error"
+                                        )
+                                        .permitAll()
+
+                                        // =================================
+                                        // AUTH
+                                        // =================================
+
+                                        .requestMatchers(
+                                                "/api/auth/**"
+                                        )
+                                        .permitAll()
+
+                                        // Public read-only catalog for registration.
+                                        // Academic structure changes remain admin-only.
+                                        .requestMatchers(
+                                                "/api/academic/**"
+                                        )
+                                        .permitAll()
+
+                                        // =================================
+                                        // SUBJECTS
+                                        //
+                                        // Temporary public because
+                                        // existing frontend may use them
+                                        // directly.
+                                        // =================================
+
+                                        .requestMatchers(
+                                                "/api/subjects",
+                                                "/api/subjects/**"
+                                        )
+                                        .permitAll()
+
+                                        // =================================
+                                        // TIMETABLES
+                                        //
+                                        // Temporary public because
+                                        // existing frontend may use them.
+                                        // =================================
+
+                                        .requestMatchers(
+                                                "/api/timetables",
+                                                "/api/timetables/**"
+                                        )
+                                        .permitAll()
+
+                                        // =================================
+                                        // ADMIN
+                                        //
+                                        // Includes:
+                                        //
+                                        // /api/admin/dashboard
+                                        // /api/admin/users
+                                        // /api/admin/locations
+                                        // etc.
+                                        // =================================
+
+                                        .requestMatchers(
+                                                "/api/admin/**"
+                                        )
+                                        .hasRole("ADMIN")
+
+                                        // =================================
+                                        // TEACHER
+                                        //
+                                        // Includes:
+                                        //
+                                        // /api/teacher/dashboard
+                                        // /api/teacher/attendance/mark
+                                        // /api/teacher/classes
+                                        // etc.
+                                        // =================================
+
+                                        .requestMatchers(
+                                                "/api/teacher/**"
+                                        )
+                                        .hasRole("TEACHER")
+
+                                        // =================================
+                                        // STUDENT
+                                        // =================================
+
+                                        .requestMatchers(
+                                                "/api/student/**"
+                                        )
+                                        .hasRole("STUDENT")
+
+                                        // =================================
+                                        // CLASS SESSION
+                                        //
+                                        // Existing class session controller
+                                        // may currently be used by teacher.
+                                        // Keep authenticated for now.
+                                        // =================================
+
+                                        .requestMatchers(
+                                                "/api/classes/**",
+                                                "/api/class-sessions/**"
+                                        )
+                                        .authenticated()
+
+                                        // =================================
+                                        // EVERYTHING ELSE
+                                        // =================================
+
+                                        .anyRequest()
+                                        .authenticated()
+                )
+
+                // =================================================
+                // FORM LOGIN OFF
+                // =================================================
+
+                .formLogin(
+                        form ->
+                                form.disable()
+                )
+
+                // =================================================
+                // HTTP BASIC OFF
+                // =================================================
+
+                .httpBasic(
+                        httpBasic ->
+                                httpBasic.disable()
+                )
+
+                // =================================================
+                // JWT FILTER
+                // =================================================
+
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }
 
-    /**
-     * ======================================================
-     * CORS Configuration
-     * ------------------------------------------------------
-     * Allows the React frontend to send requests to the
-     * Spring Boot backend.
-     *
-     * Vite commonly runs on:
-     * http://localhost:5173
-     * ======================================================
-     */
+    // =====================================================
+    // CORS CONFIGURATION
+    // =====================================================
+
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource
+    corsConfigurationSource() {
 
         CorsConfiguration configuration =
                 new CorsConfiguration();
 
-        /*
-         * React frontend addresses allowed to access backend.
-         */
-        configuration.setAllowedOrigins(List.of(
-                "http://localhost:5173",
-                "http://127.0.0.1:5173"
-        ));
+        // =================================================
+        // FRONTEND ORIGINS
+        // =================================================
 
-        /*
-         * HTTP methods allowed from frontend.
-         */
-        configuration.setAllowedMethods(List.of(
-                "GET",
-                "POST",
-                "PUT",
-                "PATCH",
-                "DELETE",
-                "OPTIONS"
-        ));
+        configuration.setAllowedOrigins(
+                List.of(
+                        "http://localhost:5173",
+                        "http://127.0.0.1:5173",
+                        "http://192.168.1.10:5173"
+                )
+        );
 
-        /*
-         * Headers allowed in frontend requests.
-         */
-        configuration.setAllowedHeaders(List.of(
-                "Authorization",
-                "Content-Type"
-        ));
+        // =================================================
+        // HTTP METHODS
+        // =================================================
 
-        /*
-         * Allows cookies or authorization credentials.
-         *
-         * This will be useful later if refresh tokens are
-         * stored in HttpOnly cookies.
-         */
-        configuration.setAllowCredentials(true);
+        configuration.setAllowedMethods(
+                List.of(
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "PATCH",
+                        "DELETE",
+                        "OPTIONS"
+                )
+        );
 
-        /*
-         * Browser may read the Authorization response header.
-         */
-        configuration.setExposedHeaders(List.of(
-                "Authorization"
-        ));
+        // =================================================
+        // REQUEST HEADERS
+        // =================================================
 
-        /*
-         * Cache browser CORS preflight response for one hour.
-         */
-        configuration.setMaxAge(3600L);
+        configuration.setAllowedHeaders(
+                List.of(
+                        "Authorization",
+                        "Content-Type",
+                        "Accept",
+                        "Origin"
+                )
+        );
+
+        // =================================================
+        // CREDENTIALS
+        // =================================================
+
+        configuration.setAllowCredentials(
+                true
+        );
+
+        // =================================================
+        // EXPOSED HEADERS
+        // =================================================
+
+        configuration.setExposedHeaders(
+                List.of(
+                        "Authorization"
+                )
+        );
+
+        // =================================================
+        // PREFLIGHT CACHE
+        // =================================================
+
+        configuration.setMaxAge(
+                3600L
+        );
+
+        // =================================================
+        // APPLY CORS
+        // =================================================
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
 
-        /*
-         * Apply this CORS configuration to every backend URL.
-         */
         source.registerCorsConfiguration(
                 "/**",
                 configuration

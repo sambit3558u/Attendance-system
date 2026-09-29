@@ -1,0 +1,187 @@
+/* Shared mobile/tablet safety layer for every workspace page. */
+*, *::before, *::after { box-sizing: border-box; }
+img, svg, video { max-width: 100%; }
+.mobile-welcome-break { display: none; }
+.top-notification-mobile { display: none; }
+.mobile-top-actions { display: none; }
+button, a, input, select, textarea { min-width: 0; }
+.teacher-workspace button, .student-profile-page button, .student-attendance-page button,
+.student-settings-page button, .student-notifications-page button { min-height: 42px; padding: 10px 15px; border-radius: 9px; font-size: 13px; font-weight: 700; line-height: 1.2; }
+.schedule-actions > button { min-height: 42px; padding: 10px 14px; font-size: 12px; border-radius: 9px; }
+.student-mobile-menu-toggle, .student-mobile-menu-panel, .student-mobile-menu-backdrop { display: none; }
+
+@media (max-width: 1024px) {
+  .page-container, .teacher-workspace, .student-dashboard-page, .student-profile-page,
+  .student-attendance-page, .student-timetable-page, .student-settings-page,
+  .student-notifications-page { width: 100%; max-width: 100%; padding-left: 20px; padding-right: 20px; }
+  .teacher-workspace-header, .student-profile-header, .student-attendance-header { gap: 16px; flex-wrap: wrap; }
+  .teacher-workspace-header h1, .student-profile-header h1 { font-size: clamp(26px, 4vw, 40px); }
+  .teacher-create-form, .student-profile-details-grid, .student-profile-edit-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .teacher-dashboard-grid, .student-dashboard-grid, .dashboard-grid, .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .teacher-sidebar, .student-sidebar { width: 230px; }
+  .admin-sidebar { width: 240px; }
+  table { min-width: 640px; }
+  .teacher-workspace-table, .admin-table-wrap, .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+@media (max-width: 640px) {
+  /* Student navigation lives in the compact top-right hamburger on phones. */
+  .student-bottom-navigation,
+  .student-attendance-bottom-nav,
+  .student-timetable-bottom-nav,
+  .student-profile-bottom-nav,
+  .student-settings-bottom-nav,
+  .student-notifications-bottom-nav { display: none !important; }
+
+  .student-mobile-menu-toggle {
+    display: inline-flex; position: fixed; top: 31px; right: 12px; z-index: 10003;
+    width: 42px; height: 42px; align-items: center; justify-content: center;
+    border: 1px solid rgba(148,163,184,.35); border-radius: 11px;
+    background: #172238; color: #fff; font-size: 23px; line-height: 1; cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,.28);
+  }
+  .student-dashboard-header, .student-attendance-header, .student-timetable-header,
+  .student-profile-header, .student-settings-header, .student-notifications-header {
+    position: relative !important;
+    z-index: 1 !important;
+    overflow: visible !important;
+  }
+  .student-dashboard-header {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border-bottom-color: transparent !important;
+  }
+  .student-header-actions {
+    position: fixed !important;
+    right: 14px !important;
+    bottom: 16px !important;
+    top: auto !important;
+    z-index: 10002 !important;
+    background: transparent !important;
+  }
+  .student-dashboard-header .student-header-actions {
+    position: fixed !important;
+    top: auto !important;
+    right: 14px !important;
+    bottom: 18px !important;
+    left: auto !important;
+    margin: 0 !important;
+    transform: none !important;
+    float: none !important;
+  }
+  .student-header-actions .student-icon-button {
+    width: 46px !important;
+    height: 46px !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    background: rgba(23, 34, 56, .72) !important;
+    border: 1px solid rgba(125, 211, 252, .3) !important;
+    box-shadow: 0 8px 22px rgba(0,0,0,.28) !important;
+    backdrop-filter: blur(8px);
+    font-size: 22px !important;
+  }
+  .student-mobile-menu-backdrop { display: none; }
+  .student-mobile-menu-backdrop.open { display: block; position: fixed; inset: 0; z-index: 9998; background: rgba(2,8,23,.9) !important; opacity: 1 !important; }
+  .student-mobile-menu-panel {
+    display: flex; flex-direction: column; position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(280px, 62vw); max-width: 62vw; z-index: 9999; padding: 18px 14px;
+    background: #08162d !important; background-image: none !important; color: #e8eefc;
+    opacity: 1 !important; backdrop-filter: none !important;
+    box-shadow: -12px 0 35px rgba(0,0,0,.35); transform: translateX(105%);
+    transition: transform .22s ease; border-left: 1px solid rgba(96,165,250,.25);
+  }
+  .student-mobile-menu-panel.open { transform: translateX(0); }
+  .student-mobile-menu-head { display:flex; align-items:center; justify-content:space-between; padding: 4px 5px 20px; font-size: 16px; }
+  .student-mobile-menu-head button { border:0; background:transparent; color:#fff; font-size:28px; cursor:pointer; }
+  .student-mobile-menu-links { display:flex; flex-direction:column; gap:7px; }
+  .student-mobile-menu-links button { display:flex; align-items:center; gap:12px; width:100%; min-height:46px; padding:10px 12px; border:1px solid transparent; border-radius:10px; background:transparent; color:#dbeafe; text-align:left; font-size:15px; font-weight:700; cursor:pointer; }
+  .student-mobile-menu-links button span { width:24px; text-align:center; color:#7dd3fc; font-size:18px; }
+  .student-mobile-menu-links button.active { background:#2563eb; color:#fff; }
+  .student-mobile-menu-links button.logout { margin-top:12px; color:#fecaca; border-top:1px solid rgba(148,163,184,.18); border-radius:0; }
+
+  .mobile-welcome-break { display: block; }
+  html { font-size: 16px; }
+  body { font-size: 14px; line-height: 1.45; }
+  body { overflow-x: hidden; }
+  .page-container, .teacher-workspace, .student-dashboard-page, .student-profile-page,
+  .student-attendance-page, .student-timetable-page, .student-settings-page,
+  .student-notifications-page { padding: 16px 12px 92px; }
+  h1 { font-size: 28px; letter-spacing: -.5px; }
+  h2 { font-size: 20px; }
+  p, label, input, select, textarea, button, th, td, small { font-size: 13px; }
+  .teacher-dashboard p, .teacher-dashboard label, .teacher-dashboard th, .teacher-dashboard td { font-size: 13px; }
+  .teacher-dashboard h1, .student-dashboard-page h1 { font-size: 26px; }
+  .teacher-dashboard h2, .student-dashboard-page h2 { font-size: 20px; }
+  .teacher-dashboard { font-size: 14px; }
+  .teacher-dashboard .schedule-time { font-size: 13px; line-height: 1.45; }
+  .teacher-dashboard .schedule-info h4 { font-size: 15px; line-height: 1.35; }
+  .teacher-dashboard .schedule-info p { font-size: 13px; line-height: 1.45; }
+  .teacher-dashboard .card-header h3 { font-size: 16px; }
+  .teacher-dashboard .card-header button { font-size: 12px; }
+  .teacher-dashboard .status { font-size: 11px; letter-spacing: .2px; }
+  .teacher-dashboard .top-header { display: block; text-align: center; }
+  .teacher-dashboard .mobile-top-actions { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .teacher-dashboard .top-notification-mobile, .teacher-dashboard .top-profile-mobile { display: inline-flex; width: 42px; height: 42px; align-items: center; justify-content: center; border-radius: 12px; background: #17243a; color: #fff; font-size: 18px; }
+  .teacher-dashboard .top-profile-mobile { border-radius: 50%; background: #2f80ed; font-weight: 800; font-size: 14px; }
+  .teacher-dashboard .header-right .icon-btn { display: none; }
+  .teacher-dashboard .header-right .top-avatar { display: none; }
+  .teacher-dashboard .top-header > div:first-child { width: 100%; text-align: center; }
+  .teacher-dashboard .top-header h1 { text-align: center; }
+  .teacher-workspace, .student-profile-page, .student-attendance-page, .student-settings-page { font-size: 14px; }
+  .teacher-workspace h1, .student-profile-page h1 { font-size: 26px; }
+  .teacher-workspace h2, .student-profile-page h2 { font-size: 19px; }
+  .student-dashboard-header, .student-attendance-header, .student-settings-header, .student-timetable-header { display: block; text-align: center; padding: 16px 0; }
+  .student-dashboard-header h1, .student-attendance-header h1, .student-settings-header h1, .student-timetable-header h1 { font-size: 25px; line-height: 1.2; }
+  .student-dashboard-main { display: flex; flex-direction: column; }
+  .student-dashboard-right { order: -1; }
+  .student-dashboard-left { order: 1; }
+  .student-dashboard-left, .student-dashboard-right { width: 100%; max-width: 100%; }
+  .statistics-grid, .attendance-summary-grid, .student-settings-account-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .student-attendance-section, .student-settings-section, .student-timetable-section { width: 100%; overflow: hidden; }
+  .subject-attendance-table-wrapper, .attendance-history-table-wrapper, .student-weekly-table-wrapper { width: 100%; overflow-x: auto; }
+  .subject-attendance-table, .attendance-history-table, .student-weekly-table { min-width: 620px; }
+  .student-attendance-bottom-nav, .student-settings-bottom-nav, .student-timetable-bottom-nav { position: fixed; z-index: 20; left: 8px; right: 8px; bottom: 8px; width: auto; overflow-x: auto; border-radius: 16px; }
+  .student-attendance-bottom-nav .attendance-nav-item, .student-settings-bottom-nav .student-settings-nav-item, .student-timetable-bottom-nav .timetable-nav-item { flex: 0 0 auto; min-width: 72px; padding: 8px 9px; font-size: 11px; }
+  .teacher-layout, .student-layout, .admin-layout, .dashboard-layout { display: block; }
+  .teacher-sidebar, .student-sidebar, .admin-sidebar { position: relative; width: 100%; min-height: auto; height: auto; }
+  .teacher-sidebar nav, .student-sidebar nav, .admin-sidebar nav { display: flex; gap: 7px; overflow-x: auto; padding: 8px; white-space: nowrap; }
+  .teacher-sidebar a, .student-sidebar a, .admin-sidebar a { flex: 0 0 auto; }
+  .teacher-dashboard-grid, .student-dashboard-grid, .dashboard-grid, .stats-grid,
+  .teacher-create-form, .student-profile-details-grid, .student-profile-edit-form,
+  .student-dashboard-content, .qr-attendance-grid { grid-template-columns: 1fr !important; }
+  .qr-attendance-grid { width: 100%; min-width: 0; overflow: visible; }
+  .qr-attendance-grid > .teacher-workspace-card { width: 100%; min-width: 0; max-width: 100%; overflow: hidden; }
+  .qr-attendance-grid .teacher-workspace-table { width: 100%; max-width: 100%; overflow-x: auto; }
+  .qr-attendance-grid .teacher-workspace-table { overflow-x: auto; }
+  .qr-attendance-grid table { width: max-content; min-width: 600px !important; table-layout: auto; font-size: 12px; }
+  .qr-attendance-grid th, .qr-attendance-grid td { padding: 10px 10px; white-space: nowrap; line-height: 1.3; }
+  .qr-attendance-grid .manual-present-btn { min-height: 36px; padding: 6px 9px; font-size: 11px; }
+  .teacher-workspace-card, .dashboard-card, .student-profile-card, .student-profile-edit-card { padding: 16px; border-radius: 14px; }
+  .teacher-workspace-header, .student-profile-header { display: block; }
+  .teacher-workspace-header button, .student-profile-header button, .student-profile-back-button { width: 100%; margin-top: 12px; }
+  .teacher-workspace-table, .admin-table-wrap, .table-responsive { width: 100%; overflow-x: auto; }
+  table { min-width: 600px; font-size: 12px; }
+  th, td { padding: 9px 8px; white-space: nowrap; }
+  .form-row, .filter-row, .toolbar, .admin-toolbar, .action-row { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  input, select, textarea { width: 100%; max-width: 100%; }
+  .teacher-workspace button, .student-profile-page button, .student-attendance-page button { min-height: 42px; }
+  .student-bottom-nav, .student-profile-bottom-nav, .teacher-bottom-nav { position: fixed; z-index: 20; left: 8px; right: 8px; bottom: 8px; width: auto; overflow-x: auto; border-radius: 16px; }
+  .login-main, .register-main { grid-template-columns: 1fr !important; padding: 20px 12px; }
+  .login-information, .register-information { display: none; }
+  .login-card, .register-card { width: 100%; max-width: 100%; padding: 20px 16px; }
+  .role-selector { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .forgot-password-main { min-height: calc(100svh - 70px); padding: 18px 12px; }
+  .forgot-password-card { width: 100%; }
+  .live-class-details, .live-attendance-zone { flex-wrap: wrap; gap: 10px; }
+  .live-mark-button, .manual-present-btn { width: 100%; }
+  .teacher-workspace button, .student-profile-page button, .student-attendance-page button,
+  .student-settings-page button, .student-notifications-page button, .admin-dashboard button,
+  .qr-back-dashboard { min-height: 40px; padding: 9px 13px; font-size: 12px; line-height: 1.2; }
+  .teacher-workspace .qr-back-dashboard { width: 100%; margin-top: 14px; }
+  .teacher-workspace .manual-present-btn { min-height: 38px; width: auto; white-space: nowrap; }
+  .schedule-actions { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; }
+  .teacher-schedule-item { display: block !important; width: 100% !important; }
+  .teacher-schedule-item .schedule-actions { width: 100% !important; min-width: 100% !important; max-width: 100% !important; align-self: stretch !important; flex: 0 0 100%; }
+  .schedule-actions button, .view-schedule-attendance-btn, .start-schedule-attendance-btn,
+  .end-schedule-attendance-btn, .attendance-running-btn { flex: 0 0 100% !important; width: 100% !important; min-height: 44px; min-width: 140px !important; max-width: 100%; padding: 10px 12px; font-size: 13px; font-weight: 800; white-space: normal; text-align: center; line-height: 1.25; overflow-wrap: anywhere; box-sizing: border-box; }
+}

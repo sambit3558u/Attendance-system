@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.smartattendance.backend.dto.AuthResponse;
 import com.smartattendance.backend.dto.LoginRequest;
 import com.smartattendance.backend.dto.RegisterRequest;
+import com.smartattendance.backend.dto.ForgotPasswordRequest;
+import com.smartattendance.backend.dto.ResetPasswordRequest;
+import com.smartattendance.backend.dto.PasswordResetResponse;
 import com.smartattendance.backend.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -82,6 +85,16 @@ public class AuthController {
         AuthResponse response = authService.login(request);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<PasswordResetResponse> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        return ResponseEntity.ok(authService.requestPasswordReset(request));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<PasswordResetResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        return ResponseEntity.ok(authService.resetPassword(request));
     }
 
     /**

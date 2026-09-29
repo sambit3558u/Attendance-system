@@ -1,0 +1,2432 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root {
+    --blue: #2563eb;
+    --blue-dark: #1d4ed8;
+    --blue-light: #dbeafe;
+
+    --green: #22c5a2;
+
+    --bg: #f3f6fb;
+    --card: #ffffff;
+
+    --text: #162033;
+    --muted: #718096;
+
+    --line: #e3e9f2;
+
+    --danger: #c62828;
+    --danger-bg: #fff0f0;
+
+    --success: #087a55;
+    --success-bg: #e9f8f2;
+}
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    background: var(--bg);
+}
+
+button,
+input,
+select {
+    font-family: Inter, system-ui, sans-serif;
+}
+
+/* =========================================================
+   ADMIN SHELL
+========================================================= */
+
+.admin-shell {
+    min-height: 100vh;
+
+    display: flex;
+
+    background:
+        radial-gradient(circle at 100% 0,
+            #dbeafe 0,
+            transparent 24%),
+        var(--bg);
+
+    color: var(--text);
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.admin-shell aside {
+    position: fixed;
+
+    inset: 0 auto 0 0;
+
+    z-index: 10;
+
+    width: 260px;
+    height: 100vh;
+
+    padding: 28px 20px;
+
+    background:
+        linear-gradient(180deg,
+            #102f58,
+            #0b2342);
+
+    color: #ffffff;
+
+    box-shadow:
+        8px 0 30px rgba(15, 42, 67, 0.1);
+
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.admin-shell aside::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+/* =========================================================
+   TEXT ALIGNMENT
+========================================================= */
+
+.admin-shell,
+.admin-shell main,
+.admin-shell section,
+.admin-shell header,
+.admin-shell aside {
+    text-align: left;
+}
+
+.admin-shell aside h2,
+.admin-shell aside p,
+.admin-shell aside button {
+    text-align: left;
+}
+
+.admin-shell aside button {
+    justify-content: flex-start;
+    white-space: nowrap;
+}
+
+.admin-shell header > b {
+    text-align: center;
+}
+
+.dashboard-stat-card small,
+.dashboard-stat-card strong,
+.stats small,
+.stats strong {
+    text-align: left;
+}
+
+.admin-form input,
+.admin-form select,
+.location-form input,
+.location-form select {
+    text-align: left;
+}
+
+.quick-actions-grid button,
+.dashboard-link,
+.weekly-class-form button,
+.planner-actions button {
+    text-align: left;
+}
+
+.dashboard-link,
+.weekly-class-form button,
+.planner-actions button {
+    justify-content: center;
+}
+
+.admin-shell th,
+.admin-shell td {
+    text-align: left;
+}
+
+.admin-shell .actions {
+    text-align: left;
+}
+
+.admin-shell .actions button,
+.admin-shell td > button {
+    text-align: center;
+}
+
+.no-records {
+    text-align: center !important;
+}
+
+/* =========================================================
+   SIDEBAR LOGO
+========================================================= */
+
+.admin-shell aside h2 {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    margin: 0;
+
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.admin-shell aside h2 span {
+    width: 42px;
+    height: 42px;
+
+    display: inline-grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(135deg,
+            #4f8df7,
+            #22c5a2);
+
+    font-size: 13px;
+
+    box-shadow:
+        0 7px 18px rgba(37, 99, 235, 0.35);
+}
+
+.admin-shell aside p {
+    margin: 6px 0 34px 53px;
+
+    color: #98b2d1;
+
+    font-size: 11px;
+
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
+}
+
+/* =========================================================
+   SIDEBAR BUTTONS
+========================================================= */
+
+.admin-shell aside button {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    margin: 6px 0;
+
+    padding: 12px 15px;
+
+    border: 1px solid transparent;
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: #bfd0e5;
+
+    text-align: left;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.admin-shell aside button:hover {
+    background:
+        rgba(255, 255, 255, 0.07);
+
+    color: #ffffff;
+
+    transform: translateX(2px);
+}
+
+.admin-shell aside button.active {
+    background:
+        linear-gradient(90deg,
+            #2563eb,
+            #347ee8);
+
+    color: #ffffff;
+
+    border-color:
+        rgba(255, 255, 255, 0.12);
+
+    box-shadow:
+        0 7px 18px rgba(7, 33, 70, 0.35);
+}
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.admin-shell aside .logout {
+    position: absolute;
+
+    bottom: 22px;
+
+    width:
+        calc(100% - 40px);
+
+    color: #ffb4b4;
+
+    border-color:
+        rgba(255, 180, 180, 0.13);
+}
+
+.admin-shell aside .logout:hover {
+    background:
+        rgba(255, 80, 80, 0.12);
+
+    color: #ffffff;
+}
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.admin-shell main {
+    width:
+        calc(100% - 260px);
+
+    max-width: 1650px;
+
+    margin-left: 260px;
+
+    padding:
+        34px 38px 60px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.admin-shell header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 28px;
+}
+
+.admin-shell h1 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 29px;
+    font-weight: 800;
+
+    letter-spacing: -0.8px;
+}
+
+.admin-shell header p {
+    margin: 7px 0 0;
+
+    color: var(--muted);
+
+    font-size: 14px;
+}
+
+.admin-shell header>b {
+    padding: 10px 16px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 30px;
+
+    background: #ffffff;
+
+    color: #345;
+
+    font-size: 12px;
+
+    box-shadow:
+        0 5px 18px rgba(25, 48, 78, 0.06);
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(6,
+            minmax(120px, 1fr));
+
+    gap: 14px;
+
+    margin-bottom: 24px;
+}
+
+.stats div {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 18px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 15px;
+
+    background:
+        rgba(255, 255, 255, 0.92);
+
+    box-shadow:
+        0 5px 18px rgba(20, 45, 75, 0.055);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.stats div:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 10px 24px rgba(20, 45, 75, 0.09);
+}
+
+.stats div::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0 auto 0 0;
+
+    width: 4px;
+
+    background:
+        linear-gradient(#2563eb,
+            #22c5a2);
+}
+
+.stats small,
+.stats strong {
+    display: block;
+
+    text-transform: capitalize;
+}
+
+/* =========================================================
+   DASHBOARD HOME
+========================================================= */
+
+.dashboard-home {
+    display: grid;
+    gap: 22px;
+    margin-bottom: 22px;
+}
+
+.dashboard-welcome,
+.dashboard-section {
+    margin: 0 !important;
+}
+
+.dashboard-welcome {
+    padding: 26px;
+    border: 1px solid #d9e5f4;
+    border-radius: 18px;
+    background: linear-gradient(120deg, #edf5ff, #f6fffc);
+    box-shadow: 0 8px 26px rgba(20, 45, 75, 0.06);
+}
+
+.dashboard-eyebrow {
+    margin: 0 0 7px;
+    color: #2563eb;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.dashboard-welcome h2,
+.dashboard-section-heading h2 {
+    margin: 0;
+    color: #183653;
+    font-size: 21px;
+}
+
+.dashboard-welcome > div > p:last-child {
+    max-width: 650px;
+    margin: 9px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.dashboard-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.dashboard-stat-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 112px;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: 0 5px 18px rgba(20, 45, 75, 0.055);
+}
+
+.dashboard-stat-card::after {
+    position: absolute;
+    right: -22px;
+    bottom: -34px;
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    background: rgba(37, 99, 235, 0.06);
+    content: "";
+}
+
+.dashboard-stat-card small,
+.dashboard-stat-card strong {
+    display: block;
+}
+
+.dashboard-stat-card small {
+    color: #718096;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.dashboard-stat-card strong {
+    position: relative;
+    z-index: 1;
+    margin-top: 12px;
+    color: #132e4f;
+    font-size: 30px;
+}
+
+.dashboard-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.quick-actions-grid button,
+.dashboard-link {
+    border: 1px solid #dbe5f1;
+    border-radius: 10px;
+    background: #f8faff;
+    color: #254563;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.quick-actions-grid button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px;
+    text-align: left;
+}
+
+.quick-actions-grid button span:last-child {
+    color: #2563eb;
+    font-size: 18px;
+}
+
+.quick-actions-grid button:hover,
+.dashboard-link:hover {
+    border-color: #9bc0f5;
+    background: #eef5ff;
+}
+
+.dashboard-link {
+    padding: 9px 12px;
+    white-space: nowrap;
+}
+
+.department-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.department-summary-card {
+    padding: 15px;
+    border: 1px solid #e2e9f2;
+    border-radius: 12px;
+    background: #fbfdff;
+}
+
+.department-summary-card h3 {
+    margin: 0 0 10px;
+    color: #183653;
+    font-size: 14px;
+}
+
+.department-summary-card ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.department-summary-card li {
+    padding: 5px 8px;
+    border-radius: 20px;
+    background: #eaf2ff;
+    color: #2862ad;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.department-summary-card p,
+.dashboard-empty {
+    margin: 0;
+    color: #7c8ca1;
+    font-size: 12px;
+}
+
+.stats small {
+    color: #76849a;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.stats strong {
+    margin-top: 7px;
+
+    color: #132e4f;
+
+    font-size: 27px;
+    font-weight: 800;
+}
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.admin-shell section {
+    margin-bottom: 22px;
+
+    padding: 24px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: 17px;
+
+    background:
+        rgba(255, 255, 255, 0.96);
+
+    box-shadow:
+        0 7px 25px rgba(20, 45, 75, 0.055);
+}
+
+.admin-shell section h2 {
+    margin: 0 0 20px;
+
+    color: #183653;
+
+    font-size: 18px;
+    font-weight: 750;
+}
+
+/* =========================================================
+   ADMIN FORM
+========================================================= */
+
+.admin-form {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4,
+            minmax(150px, 1fr));
+
+    gap: 11px;
+
+    margin-bottom: 23px;
+
+    padding: 17px;
+
+    border:
+        1px solid #e6ecf5;
+
+    border-radius: 13px;
+
+    background: #f8faff;
+}
+
+.admin-form input,
+.admin-form select {
+    min-width: 0;
+    min-height: 42px;
+
+    padding: 11px 12px;
+
+    border:
+        1px solid #d5dfec;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #26364b;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.admin-form input::placeholder {
+    color: #96a2b4;
+
+    text-transform: capitalize;
+}
+
+.admin-form input:focus,
+.admin-form select:focus {
+    border-color: #5b8def;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.admin-form button,
+.actions button,
+.admin-shell td>button {
+    padding: 10px 13px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(135deg,
+            #2563eb,
+            #377be2);
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 10px rgba(37, 99, 235, 0.18);
+
+    transition:
+        filter 0.18s ease,
+        transform 0.18s ease;
+}
+
+.admin-form button:hover,
+.actions button:hover,
+.admin-shell td>button:hover {
+    filter: brightness(0.96);
+
+    transform:
+        translateY(-1px);
+}
+
+.admin-form button:disabled,
+.actions button:disabled,
+.admin-shell td>button:disabled {
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+.admin-form .secondary {
+    background: #64748b;
+
+    box-shadow: none;
+}
+
+/* =========================================================
+   DANGER BUTTON
+========================================================= */
+
+.actions .danger,
+.admin-shell button.danger {
+    border:
+        1px solid #ffd2d2;
+
+    background: #fff0f0;
+
+    color: #c62828;
+
+    box-shadow: none;
+}
+
+/* =========================================================
+   TABLE WRAPPER
+========================================================= */
+
+.table-wrap {
+    width: 100%;
+
+    overflow-x: auto;
+
+    border:
+        1px solid #e6ebf2;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+}
+
+.table-wrap::-webkit-scrollbar {
+    height: 7px;
+}
+
+.table-wrap::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.table-wrap::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+
+    background: #cbd5e1;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.admin-shell table {
+    width: 100%;
+
+    min-width: 760px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.admin-shell thead {
+    background: #f5f8fc;
+}
+
+.admin-shell th {
+    padding: 13px 12px;
+
+    border-bottom:
+        1px solid #dfe6ef;
+
+    color: #6b7b90;
+
+    text-align: left;
+
+    text-transform: uppercase;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.65px;
+
+    white-space: nowrap;
+}
+
+.admin-shell td {
+    padding: 13px 12px;
+
+    border-bottom:
+        1px solid #edf1f6;
+
+    color: #35455a;
+
+    font-size: 12.5px;
+
+    vertical-align: middle;
+}
+
+.admin-shell tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.admin-shell tbody tr {
+    transition:
+        background 0.15s ease;
+}
+
+.admin-shell tbody tr:hover {
+    background: #f8faff;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.actions {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    white-space: nowrap;
+}
+
+.actions button {
+    padding: 7px 9px;
+
+    font-size: 10.5px;
+
+    box-shadow: none;
+}
+
+/* =========================================================
+   NO RECORDS
+========================================================= */
+
+.no-records {
+    padding: 35px !important;
+
+    color: #96a2b4 !important;
+
+    text-align: center !important;
+}
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.admin-error {
+    margin-bottom: 16px;
+
+    padding: 12px 15px;
+
+    border:
+        1px solid #ffcaca;
+
+    border-radius: 10px;
+
+    background: #fff0f0;
+
+    color: #b42318;
+
+    font-size: 13px;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.admin-loading {
+    min-height: 100vh;
+
+    display: grid;
+    place-items: center;
+
+    background: #f3f6fb;
+
+    color: #5b6b80;
+
+    font-family:
+        Inter,
+        system-ui,
+        sans-serif;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* =========================================================
+   LOCATION MANAGEMENT
+========================================================= */
+
+.location-section {
+    position: relative;
+}
+
+/* LOCATION HEADER */
+
+.location-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 20px;
+
+    margin-bottom: 18px;
+}
+
+.location-heading h2 {
+    margin-bottom: 6px !important;
+}
+
+.location-heading p {
+    max-width: 650px;
+
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+/* GPS BADGE */
+
+.location-security-badge {
+    flex-shrink: 0;
+
+    padding: 8px 13px;
+
+    border:
+        1px solid #bce9da;
+
+    border-radius: 30px;
+
+    background: #edf9f5;
+
+    color: #087a55;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.2px;
+}
+
+/* LOCATION INFO */
+
+.location-info {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+
+    padding: 13px 15px;
+
+    border:
+        1px solid #d6e5fb;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(90deg,
+            #f0f6ff,
+            #f7fbff);
+}
+
+.location-info strong {
+    flex-shrink: 0;
+
+    color: #2563eb;
+
+    font-size: 11px;
+}
+
+.location-info span {
+    color: #63748a;
+
+    font-size: 11px;
+
+    line-height: 1.55;
+}
+
+/* LOCATION FORM */
+
+.location-form {
+    grid-template-columns:
+        repeat(4,
+            minmax(150px, 1fr));
+}
+
+.location-form input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.location-form input[type="number"]::-webkit-inner-spin-button,
+.location-form input[type="number"]::-webkit-outer-spin-button {
+    margin: 0;
+
+    -webkit-appearance: none;
+}
+
+/* CURRENT LOCATION BUTTON */
+
+.location-form .secondary.location-button {
+    background:
+        linear-gradient(135deg,
+            #64748b,
+            #53657b);
+
+    color: #ffffff;
+}
+
+/* LOCATION COORDINATES */
+
+.location-section table td:nth-child(4),
+.location-section table td:nth-child(5) {
+    color: #526985;
+
+    font-family:
+        "Courier New",
+        monospace;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+}
+
+/* LOCATION RADIUS */
+
+.location-section table td:nth-child(6) {
+    color: #2563eb;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+/* =========================================================
+   WEEKLY COURSE & SEMESTER PLANNER
+========================================================= */
+
+.weekly-manager-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 18px;
+
+    margin-bottom: 20px;
+}
+
+.weekly-manager-head p {
+    margin: 4px 0 0;
+
+    color: #718096;
+
+    font-size: 12px;
+}
+
+.weekly-course-filters {
+    display: flex;
+
+    gap: 9px;
+}
+
+.weekly-course-filters select,
+.weekly-class-form select,
+.weekly-class-form input {
+    min-width: 0;
+
+    padding: 10px 12px;
+
+    border:
+        1px solid #d5dfec;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #26364b;
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.weekly-course-filters select:focus,
+.weekly-class-form select:focus,
+.weekly-class-form input:focus {
+    border-color: #5b8def;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* =========================================================
+   PLANNER MESSAGE
+========================================================= */
+
+.planner-message {
+    margin-bottom: 13px;
+
+    padding: 10px 13px;
+
+    border:
+        1px solid #ccecdf;
+
+    border-radius: 9px;
+
+    background: #e9f8f2;
+
+    color: #087a55;
+
+    font-size: 12px;
+}
+
+/* =========================================================
+   WEEKLY CLASS FORM
+========================================================= */
+
+.weekly-class-form {
+    display: grid;
+
+    grid-template-columns:
+        130px 1.5fr 1.2fr 115px 115px 120px auto;
+
+    gap: 9px;
+
+    margin-bottom: 18px;
+
+    padding: 15px;
+
+    border:
+        1px solid #e3e9f2;
+
+    border-radius: 12px;
+
+    background: #f6f9fd;
+}
+
+.weekly-class-form button {
+    min-height: 40px;
+
+    padding: 9px 13px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(135deg,
+            #2563eb,
+            #377be2);
+
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.weekly-class-form button:disabled {
+    opacity: 0.45;
+
+    cursor: not-allowed;
+}
+
+.weekly-class-form .cancel-planner {
+    padding: 10px;
+
+    background: #64748b;
+}
+
+/* =========================================================
+   WEEKLY DAYS
+========================================================= */
+
+.weekly-days {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2,
+            minmax(0, 1fr));
+
+    gap: 13px;
+}
+
+/* =========================================================
+   PLANNER DAY
+========================================================= */
+
+.planner-day {
+    overflow: hidden;
+
+    border:
+        1px solid #e1e8f2;
+
+    border-radius: 13px;
+
+    background: #fbfcfe;
+
+    transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.planner-day:hover {
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 6px 18px rgba(20, 45, 75, 0.06);
+}
+
+.planner-day>header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin: 0;
+
+    padding: 12px 14px;
+
+    background:
+        linear-gradient(90deg,
+            #eef4fc,
+            #f4f8fd);
+}
+
+.planner-day>header b {
+    color: #183653;
+
+    font-size: 12px;
+}
+
+.planner-day>header span {
+    width: 22px;
+    height: 22px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   PLANNER CLASS
+========================================================= */
+
+.planner-class {
+    display: grid;
+
+    grid-template-columns:
+        75px 1fr auto;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px;
+
+    border-bottom:
+        1px solid #e9eef5;
+}
+
+.planner-class:last-child {
+    border-bottom: 0;
+}
+
+.planner-class time {
+    color: #2563eb;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.planner-class time small,
+.planner-class div>small {
+    display: block;
+
+    margin: 2px 0;
+
+    color: #8592a5;
+
+    font-size: 8px;
+}
+
+.planner-class strong {
+    color: #26364b;
+
+    font-size: 11px;
+}
+
+/* =========================================================
+   PLANNER ACTIONS
+========================================================= */
+
+.planner-actions {
+    display: flex;
+
+    gap: 5px;
+}
+
+.planner-actions button {
+    padding: 6px 8px;
+
+    border: 0;
+
+    border-radius: 6px;
+
+    background: #e8f1ff;
+
+    color: #175fc2;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+.planner-actions button:hover {
+    background: #dceaff;
+
+    transform:
+        translateY(-1px);
+}
+
+.planner-actions .delete {
+    background: #fff0f0;
+
+    color: #c62828;
+}
+
+.planner-actions .delete:hover {
+    background: #ffe5e5;
+}
+
+/* =========================================================
+   EMPTY PLANNER
+========================================================= */
+
+.planner-no-class,
+.planner-empty {
+    padding: 28px;
+
+    color: #96a2b4;
+
+    text-align: center;
+
+    font-size: 11px;
+}
+
+.planner-empty {
+    border:
+        1px dashed #d6dfeb;
+
+    border-radius: 12px;
+}
+
+/* =========================================================
+   RESPONSIVE - LARGE TABLET
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .dashboard-overview-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .department-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stats {
+        grid-template-columns:
+            repeat(3,
+                minmax(0, 1fr));
+    }
+
+    .admin-form {
+        grid-template-columns:
+            repeat(2,
+                minmax(0, 1fr));
+    }
+
+    .location-form {
+        grid-template-columns:
+            repeat(2,
+                minmax(0, 1fr));
+    }
+
+    .weekly-class-form {
+        grid-template-columns:
+            repeat(3,
+                minmax(0, 1fr));
+    }
+
+    .weekly-days {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE - MOBILE / TABLET
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .dashboard-overview-grid,
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-shell {
+        display: block;
+    }
+
+    /* SIDEBAR BECOMES TOP MENU */
+
+    .admin-shell aside {
+        position: static;
+
+        width: 100%;
+        height: auto;
+
+        padding: 18px;
+
+        overflow: visible;
+    }
+
+    .admin-shell aside p {
+        margin-bottom: 15px;
+    }
+
+    .admin-shell aside button {
+        width: auto;
+
+        display: inline-flex;
+
+        margin: 4px 2px;
+
+        padding: 9px 12px;
+    }
+
+    .admin-shell aside button:hover {
+        transform: none;
+    }
+
+    .admin-shell aside .logout {
+        position: static;
+
+        width: auto;
+    }
+
+    /* MAIN */
+
+    .admin-shell main {
+        width: 100%;
+
+        margin: 0;
+
+        padding:
+            20px 14px 40px;
+    }
+
+    /* HEADER */
+
+    .admin-shell header {
+        align-items: flex-start;
+    }
+
+    .admin-shell header>b {
+        display: none;
+    }
+
+    .admin-shell h1 {
+        font-size: 24px;
+    }
+
+    /* STATS */
+
+    .stats {
+        grid-template-columns:
+            repeat(2,
+                minmax(0, 1fr));
+
+        gap: 9px;
+    }
+
+    .stats strong {
+        font-size: 23px;
+    }
+
+    /* FORM */
+
+    .admin-form,
+    .location-form {
+        grid-template-columns: 1fr;
+
+        padding: 13px;
+    }
+
+    /* SECTION */
+
+    .admin-shell section {
+        padding: 17px;
+    }
+
+    /* LOCATION */
+
+    .location-heading {
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+    .location-security-badge {
+        align-self: flex-start;
+    }
+
+    .location-info {
+        flex-direction: column;
+
+        gap: 5px;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE - SMALL MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .weekly-manager-head {
+        display: block;
+    }
+
+    .weekly-course-filters {
+        display: grid;
+
+        grid-template-columns: 1fr;
+
+        margin-top: 12px;
+    }
+
+    .weekly-class-form {
+        grid-template-columns: 1fr;
+    }
+
+    .planner-class {
+        grid-template-columns:
+            65px 1fr;
+    }
+
+    .planner-actions {
+        grid-column:
+            1 / -1;
+
+        flex-wrap: wrap;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE - PHONE
+========================================================= */
+
+@media (max-width: 520px) {
+
+    .dashboard-welcome {
+        padding: 19px;
+    }
+
+    .dashboard-welcome h2,
+    .dashboard-section-heading h2 {
+        font-size: 18px;
+    }
+
+    .dashboard-section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .dashboard-overview-grid,
+    .quick-actions-grid,
+    .department-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-shell aside {
+        padding: 15px 12px;
+    }
+
+    .admin-shell aside h2 {
+        font-size: 18px;
+    }
+
+    .admin-shell aside h2 span {
+        width: 38px;
+        height: 38px;
+    }
+
+    .admin-shell aside p {
+        margin:
+            5px 0 13px 49px;
+
+        font-size: 9px;
+    }
+
+    .admin-shell aside button {
+        padding: 8px 10px;
+
+        font-size: 11px;
+    }
+
+    .admin-shell main {
+        padding:
+            17px 10px 30px;
+    }
+
+    .admin-shell header {
+        margin-bottom: 20px;
+    }
+
+    .admin-shell h1 {
+        font-size: 22px;
+    }
+
+    .admin-shell header p {
+        font-size: 12px;
+    }
+
+    .stats div {
+        padding: 14px;
+    }
+
+    .stats small {
+        font-size: 10px;
+    }
+
+    .stats strong {
+        font-size: 21px;
+    }
+
+    .admin-shell section {
+        padding: 14px;
+
+        border-radius: 13px;
+    }
+
+    .admin-shell section h2 {
+        font-size: 16px;
+    }
+
+    .admin-form {
+        gap: 9px;
+    }
+
+    .admin-form input,
+    .admin-form select,
+    .admin-form button {
+        width: 100%;
+    }
+
+    .location-heading p {
+        font-size: 11px;
+    }
+
+    .location-info {
+        padding: 11px 12px;
+    }
+
+    .location-security-badge {
+        font-size: 9px;
+    }
+
+    .actions {
+        flex-wrap: wrap;
+
+        white-space: normal;
+    }
+}
+
+/* =========================================================
+   EDIT / DELETE ACTION BUTTONS
+========================================================= */
+
+.admin-shell .actions {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.admin-shell .actions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 56px;
+    min-height: 33px;
+    padding: 7px 11px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 10.5px;
+    font-weight: 800;
+    line-height: 1;
+    box-shadow: none;
+}
+
+/* Edit and other safe record actions */
+.admin-shell .actions button:not(.danger) {
+    border-color: #c9ddf8;
+    background: linear-gradient(135deg, #edf5ff, #e2efff);
+    color: #1b63bc;
+}
+
+.admin-shell .actions button:not(.danger):hover {
+    border-color: #8eb8ef;
+    background: linear-gradient(135deg, #dcecff, #d1e5ff);
+    color: #124f9d;
+    box-shadow: 0 5px 11px rgba(37, 99, 235, 0.14);
+}
+
+/* Destructive record actions */
+.admin-shell .actions button.danger {
+    border-color: #ffc8ce;
+    background: linear-gradient(135deg, #fff4f5, #ffe9eb);
+    color: #c23547;
+}
+
+.admin-shell .actions button.danger:hover {
+    border-color: #f296a2;
+    background: linear-gradient(135deg, #ffe8ea, #ffdce0);
+    color: #aa2335;
+    box-shadow: 0 5px 11px rgba(205, 57, 75, 0.13);
+}
+
+.admin-shell .actions button:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.22);
+    outline-offset: 2px;
+}
+
+.admin-shell .actions button.danger:focus-visible {
+    outline-color: rgba(205, 57, 75, 0.2);
+}
+
+/* =========================================================
+   VERY SMALL PHONE
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-shell aside button {
+        width: 100%;
+
+        justify-content: center;
+
+        margin:
+            3px 0;
+    }
+
+    .admin-shell aside .logout {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   ADMIN PANEL VISUAL POLISH
+========================================================= */
+
+.admin-shell {
+    background:
+        radial-gradient(circle at 84% 3%, rgba(159, 206, 255, 0.42), transparent 25%),
+        radial-gradient(circle at 48% 96%, rgba(106, 229, 195, 0.16), transparent 30%),
+        #f5f8fc;
+}
+
+.admin-shell aside {
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(165deg, #0d315c 0%, #10294c 52%, #081c35 100%);
+}
+
+.admin-shell aside::before {
+    position: absolute;
+    top: -80px;
+    right: -100px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(72, 143, 247, 0.18);
+    content: "";
+    pointer-events: none;
+}
+
+.admin-shell aside h2,
+.admin-shell aside p,
+.admin-shell aside button {
+    position: relative;
+    z-index: 1;
+}
+
+.admin-shell aside button {
+    min-height: 44px;
+    letter-spacing: 0.1px;
+}
+
+.admin-shell aside button.active {
+    background: linear-gradient(100deg, #286be0, #3c8bf1);
+    box-shadow: 0 10px 22px rgba(3, 20, 48, 0.35);
+}
+
+.admin-shell main {
+    padding-top: 40px;
+}
+
+.admin-shell header {
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(198, 211, 227, 0.72);
+}
+
+.admin-shell h1 {
+    font-size: clamp(26px, 2.5vw, 34px);
+    letter-spacing: -1.15px;
+}
+
+.admin-shell header > b {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-color: #d9e5f2;
+    color: #245077;
+    font-weight: 700;
+}
+
+.admin-shell header > b::before {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c5a2;
+    box-shadow: 0 0 0 4px rgba(34, 197, 162, 0.13);
+    content: "";
+}
+
+.admin-shell section {
+    border-color: rgba(216, 227, 239, 0.94);
+    box-shadow: 0 12px 30px rgba(20, 45, 75, 0.055);
+}
+
+.admin-shell section > h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-shell section > h2::before {
+    width: 4px;
+    height: 22px;
+    border-radius: 10px;
+    background: linear-gradient(#2563eb, #22c5a2);
+    content: "";
+}
+
+.admin-form {
+    border-color: #e1eaf5;
+    background: linear-gradient(135deg, #f7faff, #fbfdff);
+}
+
+.admin-form input,
+.admin-form select {
+    border-color: #d7e2ef;
+}
+
+.admin-form button,
+.actions button,
+.admin-shell td > button {
+    font-weight: 700;
+}
+
+.table-wrap {
+    border-color: #dfe8f2;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.admin-shell thead {
+    background: linear-gradient(90deg, #f3f7fc, #f8fbff);
+}
+
+.admin-shell td {
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.admin-shell tbody tr:hover {
+    background: #f4f8ff;
+}
+
+.dashboard-stat-card,
+.stats div {
+    border-color: rgba(215, 227, 240, 0.98);
+}
+
+.dashboard-stat-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(28, 73, 123, 0.11);
+}
+
+.quick-actions-grid button {
+    transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.quick-actions-grid button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(36, 90, 151, 0.08);
+}
+
+@media (max-width: 800px) {
+    .admin-shell main {
+        padding-top: 24px;
+    }
+
+    .admin-shell header {
+        padding-bottom: 17px;
+    }
+}
+
+/* =========================================================
+   MANAGEMENT TAB POLISH
+========================================================= */
+
+/* Academic Structure, Subjects, Timetables, Attendance and Sessions */
+.admin-shell main > section {
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-shell main > section::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #2563eb, #42a5f5 58%, #22c5a2);
+    content: "";
+}
+
+.admin-shell section > p:not(.no-records) {
+    margin: -10px 0 20px;
+    color: #73849a;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.admin-shell section h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 26px 0 11px;
+    color: #284762;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.admin-shell section h3::before {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c5a2;
+    box-shadow: 0 0 0 4px rgba(34, 197, 162, 0.13);
+    content: "";
+}
+
+.admin-shell .admin-form {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.admin-shell .admin-form::before {
+    position: absolute;
+    top: 11px;
+    bottom: 11px;
+    left: 0;
+    width: 3px;
+    border-radius: 0 4px 4px 0;
+    background: #82b2fa;
+    content: "";
+}
+
+.admin-shell .admin-form input,
+.admin-shell .admin-form select {
+    background-color: rgba(255, 255, 255, 0.94);
+}
+
+.admin-shell .admin-form input:hover,
+.admin-shell .admin-form select:hover {
+    border-color: #abc7ea;
+}
+
+.admin-shell .admin-form button[type="submit"] {
+    background: linear-gradient(135deg, #1e63d9, #3d8bf5);
+}
+
+.admin-shell .admin-form .secondary {
+    background: #eaf0f7;
+    color: #4d647d;
+}
+
+.admin-shell .admin-form .secondary:hover {
+    background: #dae5f1;
+}
+
+.admin-shell .table-wrap {
+    border-radius: 14px;
+}
+
+.admin-shell th:first-child,
+.admin-shell td:first-child {
+    padding-left: 17px;
+}
+
+.admin-shell th:last-child,
+.admin-shell td:last-child {
+    padding-right: 17px;
+}
+
+.admin-shell .actions button:not(.danger) {
+    border: 1px solid #cfe0f9;
+    background: #edf5ff;
+    color: #1b63bc;
+}
+
+.admin-shell .actions button:not(.danger):hover {
+    background: #dcecff;
+}
+
+.admin-shell .actions .danger,
+.admin-shell button.danger {
+    border-color: #ffd5d8;
+    background: #fff4f4;
+}
+
+/* Student and teacher attendance locations */
+.location-section {
+    border-color: #d7e7f6 !important;
+}
+
+.location-heading {
+    padding: 18px;
+    border: 1px solid #e0ebf7;
+    border-radius: 13px;
+    background: linear-gradient(118deg, #f3f8ff, #f8fffd);
+}
+
+.location-heading h2 {
+    color: #173e68 !important;
+}
+
+.location-security-badge {
+    border-color: #b9e9dc;
+    background: #effbf7;
+    box-shadow: 0 5px 13px rgba(23, 144, 103, 0.08);
+}
+
+.location-info {
+    border-color: #d4e4f8;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.location-section .admin-form {
+    background: linear-gradient(135deg, #f5f9ff, #f8fcff);
+}
+
+.location-section table td:nth-child(2) {
+    color: #2e5f8e;
+    font-weight: 700;
+}
+
+/* Weekly Planner */
+.weekly-manager-head {
+    padding: 18px;
+    border: 1px solid #dce8f6;
+    border-radius: 13px;
+    background: linear-gradient(118deg, #f3f8ff, #fbfdff);
+}
+
+.weekly-manager-head h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.weekly-manager-head h2::before {
+    width: 4px;
+    height: 22px;
+    border-radius: 10px;
+    background: linear-gradient(#2563eb, #22c5a2);
+    content: "";
+}
+
+.weekly-course-filters select {
+    min-width: 150px;
+    border-color: #d5e2f0;
+    box-shadow: 0 3px 8px rgba(37, 99, 235, 0.04);
+}
+
+.weekly-class-form {
+    border-color: #dce7f4;
+    background: linear-gradient(135deg, #f4f8ff, #f9fcff);
+}
+
+.weekly-class-form button:not(.cancel-planner) {
+    box-shadow: 0 5px 11px rgba(37, 99, 235, 0.17);
+}
+
+.planner-day {
+    border-color: #dce7f2;
+}
+
+.planner-day > header {
+    background: linear-gradient(90deg, #edf5ff, #f4fbff);
+}
+
+.planner-day > header span {
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+}
+
+.planner-class {
+    transition: background 0.16s ease;
+}
+
+.planner-class:hover {
+    background: #f7faff;
+}
+
+@media (max-width: 800px) {
+    .location-heading,
+    .weekly-manager-head {
+        padding: 14px;
+    }
+}
+
+/* =========================================================
+   BUTTON SYSTEM AND SIZING
+========================================================= */
+
+.admin-shell button {
+    font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Primary form buttons */
+.admin-form button,
+.location-form button {
+    min-height: 42px;
+    padding: 10px 15px;
+    border-radius: 9px;
+    letter-spacing: 0.1px;
+}
+
+.admin-form button:not(.secondary),
+.location-form button:not(.secondary) {
+    background: linear-gradient(135deg, #1f62d5, #438df1);
+    box-shadow: 0 7px 15px rgba(37, 99, 235, 0.2);
+}
+
+.admin-form button:not(.secondary):hover,
+.location-form button:not(.secondary):hover {
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.27);
+}
+
+.admin-form button:active,
+.location-form button:active,
+.quick-actions-grid button:active,
+.dashboard-link:active,
+.actions button:active,
+.planner-actions button:active,
+.weekly-class-form button:active {
+    transform: translateY(1px) !important;
+}
+
+/* Compact table actions */
+.actions {
+    gap: 7px;
+}
+
+.actions button,
+.admin-shell td > button {
+    min-height: 31px;
+    padding: 7px 10px;
+    border-radius: 7px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.05px;
+}
+
+/* Secondary, edit and delete buttons */
+.admin-shell .secondary {
+    border: 1px solid #d1ddea;
+    background: #eff4f9;
+    color: #4b6179;
+}
+
+.admin-shell .secondary:hover {
+    border-color: #bbcde0;
+    background: #e3ebf3;
+}
+
+.admin-shell button.danger,
+.admin-shell .actions .danger {
+    min-height: 31px;
+    border: 1px solid #ffd1d6;
+    background: #fff2f3;
+    color: #c8384b;
+}
+
+.admin-shell button.danger:hover,
+.admin-shell .actions .danger:hover {
+    border-color: #f7aeb8;
+    background: #ffe7e9;
+}
+
+/* Dashboard action buttons */
+.quick-actions-grid button {
+    min-height: 56px;
+    padding: 14px 15px;
+    border-radius: 11px;
+}
+
+.quick-actions-grid button span:first-child {
+    font-size: 12px;
+}
+
+.dashboard-link {
+    min-height: 38px;
+    padding: 9px 13px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 750;
+}
+
+/* Weekly planner actions */
+.weekly-class-form button {
+    min-height: 42px;
+    border-radius: 9px;
+    font-size: 11px;
+}
+
+.weekly-class-form .cancel-planner {
+    background: #eaf0f6;
+    color: #51677e;
+}
+
+.planner-actions button {
+    min-height: 28px;
+    padding: 6px 9px;
+    border-radius: 7px;
+    font-size: 9.5px;
+}
+
+/* Sidebar controls retain clear desktop navigation spacing. */
+.admin-shell aside button {
+    min-height: 43px;
+    padding: 11px 15px;
+    border-radius: 10px;
+}
+
+.admin-shell aside .logout {
+    min-height: 42px;
+}
+
+@media (max-width: 800px) {
+    .admin-shell aside button {
+        min-height: 38px;
+        padding: 9px 12px;
+    }
+
+    .admin-form button,
+    .location-form button {
+        min-height: 44px;
+    }
+}
+
+@media (max-width: 520px) {
+    .quick-actions-grid button {
+        min-height: 52px;
+    }
+
+    .admin-shell .actions button,
+    .admin-shell td > button {
+        min-height: 34px;
+        padding: 7px 9px;
+    }
+
+    .dashboard-link {
+        width: 100%;
+    }
+}

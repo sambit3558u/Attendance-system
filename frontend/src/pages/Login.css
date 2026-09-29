@@ -547,6 +547,16 @@ button {
     border: none;
 }
 
+.forgot-password-main { display: grid; grid-template-columns: minmax(0, 560px); justify-content: center; align-content: center; justify-items: stretch; width: 100%; min-height: calc(100vh - 86px); margin: 0 auto; padding: 32px 20px; box-sizing: border-box; }
+.forgot-password-card { width: min(560px, 100%); max-width: 560px; margin: 0 auto; }
+.forgot-password-card .login-card-heading { text-align: center; }
+.forgot-password-card .login-form { width: 100%; }
+.forgot-password-card .back-home-button { width: 100%; justify-content: center; }
+.forgot-password-card .login-submit-button + .back-home-button { margin-top: 12px; }
+.login-error-message, .login-success-message { padding: 11px 13px; border-radius: 10px; font-size: 13px; line-height: 1.45; }
+.login-error-message { background: #fff1f2; color: #b42335; }
+.login-success-message { background: #e9f8f2; color: #087a55; }
+
 .forgot-password-button:hover {
     color: #93c5fd;
 }
